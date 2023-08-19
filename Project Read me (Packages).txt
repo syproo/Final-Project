@@ -1,6 +1,6 @@
 Mercado Project packages
 
-Command for running both server & client (npm run server)
+Command for running both server & client (npm run dev)
 
 Backend:
 *express.js for server
