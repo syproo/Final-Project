@@ -3,6 +3,8 @@
 
 # Command for running both server & client (npm run dev)
 
+
+## Setup Instructions
  - Clone the repo
  - install dependencies in both folder (In ecommerce-app root) & (client folder)
  - Then copy .env file & paste in (In ecommerce-app root)
