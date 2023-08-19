@@ -11,7 +11,7 @@
 
 ---
 
-###Backend:
+### Backend:
 - express.js for server
 - nodemon - utility for server restarting
 - dotenv - for confidential data
@@ -25,7 +25,7 @@
 
 ---
 
-###frontend
+### Frontend
 - React Js
 - vite hrm
 - tailwind css
