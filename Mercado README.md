@@ -9,7 +9,9 @@
 4-Now your Project is ready to code run the command (npm run dev) this cammand will run your both server & client 
 5-Port for access server on localhost is 8080 
 
-#Backend:
+---
+
+##Backend:
 -express.js for server
 -nodemon - utility for server restarting
 -dotenv - for confidential data
@@ -21,8 +23,9 @@
 -Concurrently - for running both servers
 -Cors - For cross origin 
 
+---
 
-#frontend
+##frontend
 -React Js
 -vite hrm
 -tailwind css
