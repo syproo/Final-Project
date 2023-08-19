@@ -10,24 +10,24 @@
 5-Port for access server on localhost is 8080 
 
 #Backend:
-*express.js for server
-*nodemon - utility for server restarting
-*dotenv - for confidential data
-*mongodb - Database
-*mongoose-ODM
-*morgan -
-*bcrypt -for hashing
-*JWT - Json web Token
-*Concurrently - for running both servers
-*Cors - For cross origin 
+-express.js for server
+-nodemon - utility for server restarting
+-dotenv - for confidential data
+-mongodb - Database
+-mongoose-ODM
+-morgan - http middleware for node
+-bcrypt -for hashing
+-JWT - Json web Token
+-Concurrently - for running both servers
+-Cors - For cross origin 
 
 
 #frontend
-*React Js
-*vite hrm
-*tailwind css
-*React Router Dom
-*Swiper Js
-*Helmet library for SEO
-*axios 
-*React-hot-toast
+-React Js
+-vite hrm
+-tailwind css
+-React Router Dom
+-Swiper Js
+-Helmet library for SEO
+-axios 
+-React-hot-toast
