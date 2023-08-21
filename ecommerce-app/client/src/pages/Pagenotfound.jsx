@@ -8,7 +8,7 @@ const Pagenotfound = () => {
       <Navtop title={"Mercado-Page Not Found"}/>
       <MainNav />
       <div className="w-full h-auto text-center items-center flex flex-col justify-center">
-        <img className="w-[300px]" src="./public/images/notfound.png" alt="" />
+        <img className="w-[300px]" src=".//images/notfound.png" alt="" />
         <p className="text-4xl p-4 font-semibold">
           {" "}
           Oops ! The page you are trying to access is not available

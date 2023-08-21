@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import UserDashboard from "./pages/UserDashboard";
 import ProtectedRoute from "./dashboard routes/ProtectedRoute.jsx";
+import ForgotPassword from "./components/forgotpaswword/ForgotPassword";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/userdashboard" element={<ProtectedRoute />}>
           <Route path="" element={<UserDashboard />} />
         </Route>

@@ -10,6 +10,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [key, setKey] = useState("");
 
   const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ const Register = () => {
           email,
           phone,
           password,
+          key,
         }
       );
 
@@ -60,6 +62,19 @@ const Register = () => {
                 onChange={(e) => setName(e.target.value)}
                 required
                 placeholder="Enter Your Full Name"
+                className="block w-full px-4 py-2 mt-2  bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              />
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-semibold text-gray-800">
+                Secret Key
+              </label>
+              <input
+                type="text"
+                value={key}
+                onChange={(e) => setKey(e.target.value)}
+                required
+                placeholder="Enter your secret key to secure your account"
                 className="block w-full px-4 py-2 mt-2  bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
               />
             </div>
@@ -104,7 +119,7 @@ const Register = () => {
             </div>
             <div className="mt-6">
               <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-purple-600">
-                Submit
+                Sign Up
               </button>
             </div>
           </form>

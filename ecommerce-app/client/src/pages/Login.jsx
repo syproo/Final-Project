@@ -2,7 +2,7 @@ import { useState } from "react";
 import MainNav from "../components/MainNav";
 import Navtop from "../components/Navtop";
 import axios from "axios";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/auth.jsx";
 
@@ -78,6 +78,9 @@ const Login = () => {
                 className="block w-full px-4 py-2 mt-2  bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
               />
             </div>
+            <Link to={"/forgotpassword"}>
+              <div>Forgot Password</div>
+            </Link>
             <div className="mt-6">
               <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-purple-600">
                 Login
