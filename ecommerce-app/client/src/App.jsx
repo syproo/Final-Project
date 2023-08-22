@@ -6,9 +6,17 @@ import Contact from "./pages/Contact";
 import Pagenotfound from "./pages/Pagenotfound";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import UserDashboard from "./pages/UserDashboard";
 import ProtectedRoute from "./dashboard routes/ProtectedRoute.jsx";
 import ForgotPassword from "./components/forgotpaswword/ForgotPassword";
+import AdminProtectedRoute from './dashboard routes/AdminProtectedRoute';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import CreateCategory from './pages/Admin/CreateCategory';
+import CreateProduct from './pages/Admin/CreateProduct'
+import Orders from "./pages/Admin/Orders";
+import Products from "./pages/Admin/Products";
+import Dashboard from "./pages/User/UserDashboard";
+import UserOrders from "./pages/User/userOrders";
+import UserProfile from "./pages/User/UserProfile";
 
 function App() {
   return (
@@ -20,8 +28,17 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/userdashboard" element={<ProtectedRoute />}>
-          <Route path="" element={<UserDashboard />} />
+        <Route path="/dashboard" element={<ProtectedRoute />}>
+          <Route path="user" element={<Dashboard />} />
+          <Route path="user/profile" element={<UserProfile />} />
+          <Route path="user/orders" element={<UserOrders />} />
+        </Route>
+        <Route path="/dashboard" element={<AdminProtectedRoute />}>
+          <Route path="admin" element={<AdminDashboard />} />
+          <Route path="admin/create-category" element={<CreateCategory />} />
+          <Route path="admin/create-product" element={<CreateProduct />} />
+          <Route path="admin/products" element={<Products />} />
+          <Route path="admin/orders" element={<Orders />} />
         </Route>
         <Route path="*" element={<Pagenotfound />} />
       </Routes>
