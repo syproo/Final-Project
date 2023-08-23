@@ -28,7 +28,7 @@ router.put(
 );
 
 //get all category
-router.get("/all-category", categoryController);
+router.get("/get-category", categoryController);
 
 //delete category
 router.delete(
