@@ -1,6 +1,5 @@
 import slugify from "slugify";
 import CategoryModel from "../models/CategoryModel.js";
-import router from "../routes/CategoryRoutes.js";
 
 //create category controller
 export const createCategoryController = async (req, res) => {
@@ -63,11 +62,11 @@ export const updateCategoryController = async (req, res) => {
 //get all category
 export const categoryController = async (req, res) => {
   try {
-    const allCategories = await CategoryModel.find({});
+    const category = await CategoryModel.find({});
     res.status(200).send({
       success: true,
       message: "Categories list",
-      allCategories,
+      category,
     });
   } catch (error) {
     console.log(error);

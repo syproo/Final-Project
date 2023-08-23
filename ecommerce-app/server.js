@@ -1,11 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
+import cors from "cors";
 import connectDatabase from "./config/database.js";
 import authRoutes from "./routes/authRoute.js";
 import productRoutes from "./routes/productRoutes.js"
-import cors from "cors";
-import router from "./routes/CategoryRoutes.js";
+import categoryRoutes from './routes/CategoryRoutes.js'
 
 
 //DotEnv
@@ -23,8 +23,8 @@ app.use(morgan("dev"));
 
 //Routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/product", productRoutes);
-app.use("/api/v1/category", router);
 
 //Rest Api
 app.get("/", (req, res) => {
