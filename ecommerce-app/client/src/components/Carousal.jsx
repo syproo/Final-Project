@@ -41,7 +41,7 @@ const Carousal = () => {
           <SwiperSlide>
             <img
               className=" "
-              src="https://cdn.pixabay.com/photo/2020/03/27/17/03/shopping-4974313_1280.jpg"
+              src="https://images.pexels.com/photos/8078443/pexels-photo-8078443.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               alt=""
             />
           </SwiperSlide>
