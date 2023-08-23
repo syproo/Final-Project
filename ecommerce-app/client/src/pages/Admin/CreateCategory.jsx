@@ -5,15 +5,15 @@ import MainNav from '../../components/MainNav'
 import toast from "react-hot-toast";
 import axios from 'axios';
 import CategoryForms from '../../components/forms/CategoryForms';
-import {Modal} from "antd"
+import { Modal } from "antd"
 
 
 const CreateCategory = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [visible, setVisible] = useState(false);
- const [selected, setSelected] = useState(null)
- const [updatedName, setUpdatedName] = useState("")
+  const [selected, setSelected] = useState(null)
+  const [updatedName, setUpdatedName] = useState("")
 
   //handle submit 
   const handleSubmit = async (e) => {
@@ -50,17 +50,17 @@ const CreateCategory = () => {
   }, [])
 
   // Update category
-  const handleUpdate = async(e) => {
+  const handleUpdate = async (e) => {
     try {
       e.preventDefault()
-      const {data}= await axios.put(`http://localhost:8080/api/v1/category/update-category/${selected._id}`, {name:updatedName})
-      if(data.success){
-          toast.success(`${name} is updated`);
-          setSelected(null);
-          setUpdatedName("");
-          setVisible(false);
-          getAllcategory();
-      }else{
+      const { data } = await axios.put(`http://localhost:8080/api/v1/category/update-category/${selected._id}`, { name: updatedName })
+      if (data.success) {
+        toast.success(`${name} is updated`);
+        setSelected(null);
+        setUpdatedName("");
+        setVisible(false);
+        getAllcategory();
+      } else {
         toast.error(data.message)
       }
     } catch (error) {
@@ -69,13 +69,13 @@ const CreateCategory = () => {
   }
 
   // Delete category
-  const handleDelete = async(pid) => {
+  const handleDelete = async (pid) => {
     try {
-      const {data}= await axios.delete(`http://localhost:8080/api/v1/category/delete-category/${pid}`)
-      if(data.success){
-          toast.success(`category is deleted`);
-          getAllcategory();
-      }else{
+      const { data } = await axios.delete(`http://localhost:8080/api/v1/category/delete-category/${pid}`)
+      if (data.success) {
+        toast.success(`category is deleted`);
+        getAllcategory();
+      } else {
         toast.error(data.message)
       }
     } catch (error) {
@@ -120,15 +120,16 @@ const CreateCategory = () => {
                                 <button
                                   type="button"
                                   onClick={() => {
-                                    setVisible(true) ; 
+                                    setVisible(true);
                                     setUpdatedName(c.name);
-                                     setSelected(c)}}
+                                    setSelected(c)
+                                  }}
                                   className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" >
                                   Edit
                                 </button>
                                 <button
                                   type="button"
-                                  onClick={() => {handleDelete(c._id)}}
+                                  onClick={() => { handleDelete(c._id) }}
                                   className="inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]">
                                   Delete
                                 </button>
@@ -137,7 +138,7 @@ const CreateCategory = () => {
                           </>
 
                         ))}
-                      
+
                       </tbody>
                     </table>
                   </div>
@@ -147,14 +148,14 @@ const CreateCategory = () => {
 
           </div>
         </div>
-         {/* modal */}
-         <Modal 
-         onCancel = {() => setVisible(false)}
-         footer = {null}
-          open ={visible}
-          >
-             <CategoryForms value={updatedName} setValue={setUpdatedName} handleSubmit={handleUpdate}/>
-         </Modal>
+        {/* modal */}
+        <Modal
+          onCancel={() => setVisible(false)}
+          footer={null}
+          open={visible}
+        >
+          <CategoryForms value={updatedName} setValue={setUpdatedName} handleSubmit={handleUpdate} />
+        </Modal>
       </div>
     </>
   )
