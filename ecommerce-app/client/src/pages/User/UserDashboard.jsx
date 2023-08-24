@@ -14,8 +14,9 @@ const Dashboard = () => {
             <UserMenu />
             <div className="p-4 sm:ml-64">
                 <div className="p-4 rounded-lg border-dashed border-2 border-gray-400 h-screen">
-                    <h1 className='text-2xl'>User Name : {auth?.user?.name}</h1>
-                    <h1 className='text-2xl'>User Email : {auth?.user?.email}</h1>
+                    <h1 className='text-2xl'>Your Name : {auth?.user?.name}</h1>
+                    <h1 className='text-2xl'>Your Email : {auth?.user?.email}</h1>
+                    <h1 className='text-2xl'>Your Phone No  : {auth?.user?.phone}</h1>
                 </div>
             </div>
     </div>
