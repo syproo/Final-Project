@@ -2,9 +2,12 @@ import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../context/auth.jsx";
 import toast from "react-hot-toast";
 import { Collapse, Dropdown, initTE } from "tw-elements";
+import useCategory from "../custom Hooks/useCategory.js";
 
 const MainNav = () => {
   const [auth, setAuth] = useAuth();
+  const categories = useCategory();
+
   const handleLogout = () => {
     setAuth({
       ...auth,
@@ -18,10 +21,9 @@ const MainNav = () => {
     <>
       <div className="flex justify-between p-4 border-2 border-red-400 items-center">
         {/*Logo*/}
-
-        <div className="cursor-pointer">
+        <div className="cursor-pointer w-32">
           <Link to={"/"}>
-            <h1 className="text-4xl font-bold">Mercado</h1>
+            <img src="public\images\logo.png" alt="" />
           </Link>
         </div>
         {/*NavLinks*/}
@@ -30,9 +32,36 @@ const MainNav = () => {
             <li>
               <NavLink to={"/"}>Home</NavLink>
             </li>
-            <li>
-              <NavLink to={"/Category"}>Category</NavLink>
-            </li>
+
+            {/*Category Dropdown */}
+
+            <div className=" dropdown dropdown-hover">
+              <label tabIndex={0} className="">
+                <Link to={"/categories"}>Categories</Link>
+              </label>
+
+              <ul
+                tabIndex={0}
+                className=" dropdown-content z-[1] py-2 menu shadow bg-base-100 rounded-box w-40"
+              >
+                {categories.map((c) => (
+                  <>
+                    <li>
+                      {" "}
+                      <Link className="p-1" to={`/categories`}>
+                        All Categories
+                      </Link>
+                    </li>
+                    <li key={c._id}>
+                      <Link className="p-1" to={`/category/${c.slug}`}>
+                        {c.name}
+                      </Link>
+                    </li>
+                  </>
+                ))}
+              </ul>
+            </div>
+
             {/*Login and Logout turnery operator*/}
             {!auth.user ? (
               <>
