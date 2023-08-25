@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
-import AdminMenu from '../../components/AdminMenu'
-import Navtop from '../../components/Navtop'
-import MainNav from '../../components/MainNav'
+import { useEffect, useState } from "react";
+import AdminMenu from "../../components/AdminMenu";
+import Navtop from "../../components/Navtop";
+import MainNav from "../../components/MainNav";
 import toast from "react-hot-toast";
 import axios from 'axios';
 import CategoryForms from '../../components/forms/CategoryForms';
@@ -15,39 +15,44 @@ const CreateCategory = () => {
   const [selected, setSelected] = useState(null)
   const [updatedName, setUpdatedName] = useState("")
 
-  //handle submit 
+  //handle submit
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      const { data } = await axios.post("http://localhost:8080/api/v1/category/create-category", { name })
+      const { data } = await axios.post(
+        "http://localhost:8080/api/v1/category/create-category",
+        { name }
+      );
       if (data?.success) {
-        toast.success(`${name} is created `)
+        toast.success(`${name} is created `);
         getAllcategory();
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
       }
     } catch (error) {
-      console.log(error)
-      toast.error("something went wrong input form")
+      console.log(error);
+      toast.error("something went wrong input form");
     }
-  }
+  };
 
   // Get All Categories
   const getAllcategory = async () => {
     try {
-      const { data } = await axios.get("http://localhost:8080/api/v1/category/get-category");
+      const { data } = await axios.get(
+        "http://localhost:8080/api/v1/category/get-category"
+      );
       if (data?.success) {
-        return setCategories(data?.category);
+        setCategories(data?.category);
       }
     } catch (error) {
-      console.log(error)
-      toast.error(`something went wrong`)
+      console.log(error);
+      toast.error(`something went wrong`);
     }
-  }
+  };
 
   useEffect(() => {
     getAllcategory();
-  }, [])
+  }, []);
 
   // Update category
   const handleUpdate = async (e) => {
@@ -64,9 +69,9 @@ const CreateCategory = () => {
         toast.error(data.message)
       }
     } catch (error) {
-      toast.error("something went wrong while updating")
+      toast.error("something went wrong while updating");
     }
-  }
+  };
 
   // Delete category
   const handleDelete = async (pid) => {
@@ -79,9 +84,9 @@ const CreateCategory = () => {
         toast.error(data.message)
       }
     } catch (error) {
-      toast.error("something went wrong while updating")
+      toast.error("something went wrong while Deleting");
     }
-  }
+  };
   return (
     <>
       <Navtop title={"Create - Category"} />
@@ -89,7 +94,7 @@ const CreateCategory = () => {
       <AdminMenu />
       <div className="p-4 sm:ml-64">
         <div className="p-4 rounded-lg border-dashed border-2 border-gray-400 h-screen">
-          <h1 className='text-2xl'>Manage Categories </h1>
+          <h1 className="text-2xl">Manage Categories </h1>
           {/* form for Adding new categories */}
           <div>
             <CategoryForms
@@ -99,7 +104,7 @@ const CreateCategory = () => {
             />
           </div>
           {/* table for categories */}
-          <div >
+          <div>
             <div className="flex flex-col">
               <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -107,15 +112,19 @@ const CreateCategory = () => {
                     <table className="min-w-full text-left text-sm font-light">
                       <thead className="border-b font-medium dark:border-neutral-500">
                         <tr>
-                          <th scope="col" className="px-6 py-4">Name</th>
-                          <th scope="col" className="px-6 py-4">Actions</th>
+                          <th scope="col" className="px-6 py-4">
+                            Name
+                          </th>
+                          <th scope="col" className="px-6 py-4">
+                            Actions
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
                         {categories?.map((c) => (
                           <>
                             <tr>
-                              <td key={c._id} >{c.name}</td>
+                              <td key={c._id}>{c.name} </td>
                               <td>
                                 <button
                                   type="button"
@@ -127,6 +136,8 @@ const CreateCategory = () => {
                                   className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" >
                                   Edit
                                 </button>
+                              </td>
+                              <td>
                                 <button
                                   type="button"
                                   onClick={() => { handleDelete(c._id) }}
@@ -136,16 +147,13 @@ const CreateCategory = () => {
                               </td>
                             </tr>
                           </>
-
                         ))}
-
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
         {/* modal */}
@@ -158,7 +166,7 @@ const CreateCategory = () => {
         </Modal>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CreateCategory
+export default CreateCategory;
