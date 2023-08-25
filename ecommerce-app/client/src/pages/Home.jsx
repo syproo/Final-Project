@@ -7,8 +7,11 @@ import axios from "axios";
 import { BsCartPlus } from "react-icons/bs";
 import { Checkbox, Radio } from "antd";
 import { Prices } from "../components/Prices";
+import SearchInput from "../components/forms/SearchInput";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate()
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -62,7 +65,7 @@ const Home = () => {
   //Lifecycle Method
   useEffect(() => {
     if (!checked.length || !radio.length) getAllProducts();
-   
+
   }, [checked.length, radio.length]);
 
   useEffect(() => {
@@ -88,6 +91,10 @@ const Home = () => {
         <Navtop title={"Mercado-Home Page"} />
         <MainNav />
         <Carousal />
+        <div> 
+          <h1 className="text-2xl">Search Categories below</h1>
+          <SearchInput />
+        </div>
         <div className="">
           {/*Product Filter by Category */}
           <div className="flex flex-col p-4">
@@ -116,12 +123,12 @@ const Home = () => {
 
           {/*Filter Clear Button*/}
           <div>
-            <button onClick={()=> window.location.reload()}>Clear Filters</button>
+            <button onClick={() => window.location.reload()}>Clear Filters</button>
           </div>
 
           {/*All Products */}
           <div className="justify-center text-center">
-            
+
             <h1>All Products</h1>
             <div className="grid grid-cols-5 grid-flow-row p-4  justify-center gap-4">
               {products?.map((p) => (
@@ -139,6 +146,11 @@ const Home = () => {
                   <div className="text-lg font-bold underline p-2">
                     {p.name}
                   </div>
+                  <div className="font-bold">
+                  <p className="">
+                    {p.description.substring(0, 60)}...
+                  </p>
+                  </div>
                   <div className="text-md font-semibold">
                     <span>Rs : {p.price}</span>
                   </div>
@@ -154,7 +166,7 @@ const Home = () => {
                       </button>
                     </div>
                     <div className="rounded-lg p-2 border text-bold text-white bg-gray-800 shadow-md shadow-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500">
-                      <button>Product Description....</button>
+                      <button onClick={() => navigate(`/product/${p.slug}`)}>Product Description....</button>
                     </div>
                   </div>
                 </div>
@@ -163,7 +175,10 @@ const Home = () => {
           </div>
         </div>
         <Footer />
-      </div>
+      
+        </div>
+
+
     </>
   );
 };
