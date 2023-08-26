@@ -8,9 +8,12 @@ import { BsCartPlus } from "react-icons/bs";
 import { Checkbox, Radio } from "antd";
 import { Prices } from "../components/Prices";
 import SearchInput from "../components/forms/SearchInput";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/Cart";
+import { toast } from "react-hot-toast";
 
 const Home = () => {
+  const [cart, setCart] = useCart()
   const navigate = useNavigate()
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -135,6 +138,7 @@ const Home = () => {
         <Navtop title={"Mercado-Home Page"} />
         <MainNav />
         <Carousal />
+        {/* Single Product page Search input   */}
         <div> 
           <h1 className="text-2xl">Search Categories below</h1>
           <SearchInput />
@@ -168,7 +172,6 @@ const Home = () => {
 
           {/*Filter Clear Button*/}
           <div>
-            <button onClick={() => window.location.reload()}>Clear Filters</button>
             <button onClick={() => window.location.reload()}>
               Clear Filters
             </button>
@@ -204,7 +207,15 @@ const Home = () => {
                   </div>
                   <div className=" ">
                     <div className="p-2">
-                      <button className=" rounded-lg p-2 border-2 border-white text-white bg-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500">
+                      <button className=" rounded-lg p-2 border-2 border-white text-white bg-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500"
+                        onClick = {() => {
+                        setCart([...cart, p]);
+                        localStorage.setItem(
+                          "cart",
+                          JSON.stringify([...cart, p])
+                        );
+                        toast.success("Item Added to cart");
+                      }} >
                         <a className="flex gap-2 items-center ">
                           Add to Cart{" "}
                           <span className="text-xl">
@@ -214,7 +225,7 @@ const Home = () => {
                       </button>
                     </div>
                     <div className="rounded-lg p-2 border text-bold text-white bg-gray-800 shadow-md shadow-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500">
-                      <button onClick={() => navigate(`/product/${p.slug}`)}>Product Description....</button>
+                      <button onClick={() => navigate(`/product/${p.slug}`)}>Product Description....</button >
                     </div>
                   </div>
                 </div>

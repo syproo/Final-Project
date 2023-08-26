@@ -3,8 +3,10 @@ import { NavLink, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Collapse, Dropdown, initTE } from "tw-elements";
 import useCategory from "../custom Hooks/useCategory.js";
+import { useCart } from "../context/Cart.jsx";
 
 const MainNav = () => {
+  const [cart] = useCart()
   const [auth, setAuth] = useAuth();
   const categories = useCategory();
 
@@ -93,10 +95,7 @@ const MainNav = () => {
                     <div>
                       <NavLink
                         className="flex items-center text-neutral-500 transition duration-200 hover:text-neutral-700 hover:ease-in-out focus:text-neutral-700 disabled:text-black/30 motion-reduce:transition-none dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
-<<<<<<< HEAD
-=======
                         href="#"
->>>>>>> 890d8f619b2ade7a31086f454580e59a0844fddc
                         type="button"
                         id="dropdownMenuButton2"
                         data-te-dropdown-toggle-ref
@@ -132,15 +131,13 @@ const MainNav = () => {
                             data-te-dropdown-item-ref
                           >
                             Dashboard
-=======
                             to={`/dashboard/${auth?.user?.role === 1 ? `admin` : `user`
                               }`}
                             className="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-neutral-600"
                             data-te-dropdown-item-ref
-                          >
+                          
                             {" "}
                             Dashboard{" "}
->>>>>>> 890d8f619b2ade7a31086f454580e59a0844fddc
                           </NavLink>
                         </li>
                         <li>
@@ -160,7 +157,7 @@ const MainNav = () => {
               </>
             )}
             <li>
-              <NavLink to={"/Cart"}>Cart (0)</NavLink>
+              <NavLink to={"/Cart"}>Cart ( {cart?.length} )</NavLink>
             </li>
           </ul>
         </div>

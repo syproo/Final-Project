@@ -48,6 +48,3 @@ const SearchInput = () => {
 };
 
 export default SearchInput;
-//on input field
-
-//form

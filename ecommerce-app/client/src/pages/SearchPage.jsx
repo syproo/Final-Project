@@ -3,9 +3,14 @@ import Navtop from '../components/Navtop'
 import MainNav from './../components/MainNav';
 import { useSearch } from '../context/search';
 import { BsCartPlus } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from "../context/Cart";
+import { toast } from "react-hot-toast";
 
 const SearchPage = () => {
+    const navigate = useNavigate()
     const [values, setValues] = useSearch()
+    const [cart, setCart] = useCart()
     return (
         <>
             <Navtop title={"Search-Categories-Page"} />
@@ -43,7 +48,16 @@ const SearchPage = () => {
                                 </div>
                                 <div className=" ">
                                     <div className="p-2">
-                                        <button className=" rounded-lg p-2 border-2 border-white text-white bg-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500">
+                                        <button className=" rounded-lg p-2 border-2 border-white text-white bg-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500"
+                                            onClick={() => {
+                                                setCart([...cart, p]);
+                                                localStorage.setItem(
+                                                    "cart",
+                                                    JSON.stringify([...cart, p])
+                                                );
+                                                toast.success("Item Added to cart");
+                                            }}
+                                        >
                                             <a className="flex gap-2 items-center ">
                                                 Add to Cart{" "}
                                                 <span className="text-xl">
@@ -53,7 +67,7 @@ const SearchPage = () => {
                                         </button>
                                     </div>
                                     <div className="rounded-lg p-2 border text-bold text-white bg-gray-800 shadow-md shadow-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500">
-                                        <button>Product Description....</button>
+                                        <button onClick={() => navigate(`/product/${p.slug}`)}>Product Description....</button>
                                     </div>
                                 </div>
                             </div>

@@ -4,16 +4,19 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/auth.jsx";
 import { Toaster } from "react-hot-toast";
-// import { SearchProvider } from "./context/search"; 
-import {SearchProvider } from "./context/search.jsx"
+import { SearchProvider } from "./context/search"
+import { CartProvider } from "./context/Cart"
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthProvider>
       <SearchProvider>
-      <App />
-      <Toaster />
+        <CartProvider>
+          <App />
+          <Toaster />
+        </CartProvider>
       </SearchProvider>
-     </AuthProvider>
+    </AuthProvider>
   </BrowserRouter>
 );
