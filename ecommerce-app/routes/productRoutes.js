@@ -1,16 +1,7 @@
 import express from "express";
 import formidable from "express-formidable"
 import { isAdmin, requireSignIn } from "../middlewares/authMiddlewareJWT.js";
-import { createProductController, 
-    deleteProductController, 
-    getProductController, 
-    getSingleProductController, 
-    productFiltersController, 
-    productPhotoController, 
-    relatedProductController, 
-    searchProductController, 
-    updateProductController
- } from "../controllers/productController.js";
+import { createProductController, deleteProductController, getProductController, getSingleProductController, productFiltersController, productPhotoController, updateProductController } from "../controllers/productController.js";
 
 //Object Router
 const router = express.Router();
@@ -37,6 +28,15 @@ router.put("/update-product/:pid", requireSignIn, isAdmin, formidable(), updateP
 
 //-Get Products By Filter
 router.post("/product-filters", productFiltersController);
+
+//Get product count
+router.get("/product-count", productCountController);
+
+// Get products per page
+router.get("/product-list/:page", productListController);
+
+// Get products by Category
+router.get("/product-category/:slug", productCategoryController);
 
 //search product
 router.get("/search/:keyword", searchProductController);

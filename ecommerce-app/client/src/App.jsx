@@ -20,6 +20,8 @@ import UserProfile from "./pages/User/UserProfile";
 import UpdateProduct from "./pages/Admin/UpdateProduct";
 import ProductDetails from "./pages/ProductDetails";
 import SearchPage from './pages/SearchPage';
+import Categories from "./pages/Categories";
+import CategoryProduct from "./pages/CategoryProduct";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
         <Route path="/product/:slug" element={<ProductDetails />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/category/:slug" element={<CategoryProduct />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />

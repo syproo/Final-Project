@@ -21,6 +21,15 @@ const Home = () => {
   //For Product price filter
   const [radio, setRadio] = useState([]);
 
+  //Product Count
+  const [total, setTotal] = useState(0);
+
+  //Product per Page
+  const [page, setPage] = useState(1);
+
+  //State for Loading More products
+  const [loading, setLoading] = useState(false);
+
   //Filter By Category
   const handleFilter = (value, id) => {
     let all = [...checked];
@@ -48,16 +57,20 @@ const Home = () => {
 
   useEffect(() => {
     getAllCategory();
+    getTotal();
   }, []);
 
   //Get All Products
   const getAllProducts = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(
-        "http://localhost:8080/api/v1/product/get-product"
+        `http://localhost:8080/api/v1/product/product-list/${page}`
       );
+      setLoading(false);
       setProducts(data.products);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -71,6 +84,37 @@ const Home = () => {
   useEffect(() => {
     if (checked.length || radio.length) filterProduct();
   }, [checked, radio]);
+
+  //Get Product Total COunt
+  const getTotal = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:8080/api/v1/product/product-count"
+      );
+      setTotal(data?.total);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //load more Products
+  const loadMore = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(
+        `http://localhost:8080/api/v1/product/product-list/${page}`
+      );
+      setLoading(false);
+      setProducts([...products, ...data?.products]);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (page === 1) return;
+    loadMore();
+  }, [page]);
 
   //Get Filtered Products
   const filterProduct = async () => {
@@ -95,6 +139,7 @@ const Home = () => {
           <h1 className="text-2xl">Search Categories below</h1>
           <SearchInput />
         </div>
+        {/*<Carousal />*/}
         <div className="">
           {/*Product Filter by Category */}
           <div className="flex flex-col p-4">
@@ -124,6 +169,9 @@ const Home = () => {
           {/*Filter Clear Button*/}
           <div>
             <button onClick={() => window.location.reload()}>Clear Filters</button>
+            <button onClick={() => window.location.reload()}>
+              Clear Filters
+            </button>
           </div>
 
           {/*All Products */}
@@ -172,6 +220,19 @@ const Home = () => {
                 </div>
               ))}
             </div>
+          </div>
+          {/*Product Count */}
+          <div className="text-center">
+            {products && products.length < total && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setPage(page + 1);
+                }}
+              >
+                {loading ? "loading ..." : "Load More"}
+              </button>
+            )}
           </div>
         </div>
         <Footer />

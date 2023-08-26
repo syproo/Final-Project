@@ -2,9 +2,12 @@ import { NavLink, Link } from "react-router-dom";
  import { useAuth } from "../context/auth.jsx";
 import toast from "react-hot-toast";
 import { Collapse, Dropdown, initTE } from "tw-elements";
+import useCategory from "../custom Hooks/useCategory.js";
 
 const MainNav = () => {
   const [auth, setAuth] = useAuth();
+  const categories = useCategory();
+
   const handleLogout = () => {
     setAuth({
       ...auth,
@@ -18,10 +21,9 @@ const MainNav = () => {
     <>
       <div className="flex justify-between p-4 border-2 border-red-400 items-center">
         {/*Logo*/}
-
-        <div className="cursor-pointer">
+        <div className="cursor-pointer w-32">
           <Link to={"/"}>
-            <h1 className="text-4xl font-bold">Mercado</h1>
+            <img src="public\images\logo.png" alt="" />
           </Link>
         </div>
         {/*NavLinks*/}
@@ -30,9 +32,36 @@ const MainNav = () => {
             <li>
               <NavLink to={"/"}>Home</NavLink>
             </li>
-            <li>
-              <NavLink to={"/Category"}>Category</NavLink>
-            </li>
+
+            {/*Category Dropdown */}
+
+            <div className=" dropdown dropdown-hover">
+              <label tabIndex={0} className="">
+                <Link to={"/categories"}>Categories</Link>
+              </label>
+
+              <ul
+                tabIndex={0}
+                className=" dropdown-content z-[1] py-2 menu shadow bg-base-100 rounded-box w-40"
+              >
+                {categories.map((c) => (
+                  <>
+                    <li>
+                      {" "}
+                      <Link className="p-1" to={`/categories`}>
+                        All Categories
+                      </Link>
+                    </li>
+                    <li key={c._id}>
+                      <Link className="p-1" to={`/category/${c.slug}`}>
+                        {c.name}
+                      </Link>
+                    </li>
+                  </>
+                ))}
+              </ul>
+            </div>
+
             {/*Login and Logout turnery operator*/}
             {!auth.user ? (
               <>
@@ -64,6 +93,10 @@ const MainNav = () => {
                     <div>
                       <NavLink
                         className="flex items-center text-neutral-500 transition duration-200 hover:text-neutral-700 hover:ease-in-out focus:text-neutral-700 disabled:text-black/30 motion-reduce:transition-none dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400 lg:px-2 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
+<<<<<<< HEAD
+=======
+                        href="#"
+>>>>>>> 890d8f619b2ade7a31086f454580e59a0844fddc
                         type="button"
                         id="dropdownMenuButton2"
                         data-te-dropdown-toggle-ref
@@ -99,6 +132,15 @@ const MainNav = () => {
                             data-te-dropdown-item-ref
                           >
                             Dashboard
+=======
+                            to={`/dashboard/${auth?.user?.role === 1 ? `admin` : `user`
+                              }`}
+                            className="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-neutral-600"
+                            data-te-dropdown-item-ref
+                          >
+                            {" "}
+                            Dashboard{" "}
+>>>>>>> 890d8f619b2ade7a31086f454580e59a0844fddc
                           </NavLink>
                         </li>
                         <li>
