@@ -1,4 +1,4 @@
-import productModel from "../models/productModel.js";
+ import productModel from "../models/productModel.js";
 import categoryModel from "../models/CategoryModel.js"
 import orderModel from "../models/orderModel.js";
 
@@ -240,30 +240,30 @@ export const searchProductController = async (req, res) => {
   };
 
 //Similar Product Controller
-export const relatedProductController = async(req, res) => {
+export const relatedProductController = async (req, res) => {
     try {
-        const { pid, cid } = req.params;
-        const products = await productModel
-          .find({
-            category: cid,
-            _id: { $ne: pid },
-          })
-          .select("-photo")
-          .limit(3)
-          .populate("category");
-        res.status(200).send({
-          success: true,
-          products,
-        });
+      const { pid, cid } = req.params;
+      const products = await productModel
+        .find({
+          category: cid,
+          _id: { $ne: pid },
+        }) 
+        .select("-photo")
+        .limit(3)
+        .populate("category");
+      res.status(200).send({
+        success: true,
+        products,
+      });
     } catch (error) {
-        console.log(error)
-        res.status(400).send({
-            success: true,
-            message: "Error while getting related product",
-            error
-        })
+      console.log(error);
+      res.status(400).send({
+        success: false,
+        message: "error while geting related product",
+        error,
+      });
     }
-}
+  };
 // product count
 export const productCountController = async (req, res) => {
     try {

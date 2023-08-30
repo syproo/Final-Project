@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import Navtop from './../components/Navtop';
 import MainNav from '../components/MainNav';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { BsCartPlus } from 'react-icons/bs';
 import { useCart } from "../context/Cart";
 import { toast } from "react-hot-toast";
+
 
 const ProductDetails = () => {
 
@@ -18,12 +19,12 @@ const ProductDetails = () => {
   useEffect(() => {
     if (params?.slug) getProduct();
   }, [params?.slug]);
+
   // Get Product
-  //getProduct
   const getProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/get-product/${params.slug}`
+        `http://localhost:8080/api/v1/product/single-product/${params.slug}`
       );
       setProduct(data?.product);
       getSimilarProduct(data?.product._id, data?.product.category._id);
@@ -33,21 +34,21 @@ const ProductDetails = () => {
   };
 
   //Get Similar Product
-  const getSimilarProduct = async (pid, cid) => {
-    try {
-      const { data } = await axios.get(
-        `http:localhost:8080/api/v1/product/related-product/${pid}/${cid}`
-      );
-      setRelatedProducts(data?.products);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const getSimilarProduct = async (pid, cid) => {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:8080/api/v1/product/related-product/${pid}/${cid}`
+        );
+        setRelatedProducts(data?.products);
+      } catch (error) {
+        console.log(error);
+      }
+    };
   return (
     <>
       <Navtop />
       <MainNav />
-      <div>
+      <div className="flex justify-evenly p-5 ">
         {/* Product Image */}
         <div>
           <img
@@ -60,19 +61,18 @@ const ProductDetails = () => {
         <div>
 
           <h1 className='text-2xl' >Product Details</h1>
-          {JSON.stringify(product, null, 4)}
           <h6>Name : {product.name}</h6>
           <h6>Description : {product.description}</h6>
           <h6>Price : {product.price}</h6>
-          <h6>Category : {product.category?.name}</h6>
+          {/* <h6>Category : {product?.category?.name}</h6> */}
           {/* Add to cart Button */}
           <button
             className=" rounded-lg p-2 border-2 border-white text-white bg-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500"
             onClick={() => {
-              setCart([...cart, p]);
+              setCart([...cart, product]);
               localStorage.setItem(
                 "cart",
-                JSON.stringify([...cart, p])
+                JSON.stringify([...cart, product])
               );
               toast.success("Item Added to cart");
             }}
@@ -88,7 +88,7 @@ const ProductDetails = () => {
       </div>
       {/* Similar Products */}
       <div>
-        <h1>similar Products</h1>
+        <h1>similar Products </h1>
         {relatedProducts.length < 1 && (
           <p className="text-center">No Similar Products found</p>
         )}
