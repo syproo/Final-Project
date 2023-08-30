@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import Navtop from '../../components/Navtop'
 import MainNav from '../../components/MainNav'
 import UserMenu from '../../components/UserMenu'
@@ -25,26 +25,26 @@ const UserOrders = () => {
 
   return (
     <>
-    <Navtop title={"User-Orders"} />
-            <MainNav />
-            <UserMenu />
-            <div className="p-4 sm:ml-64">
-                <div className="p-4 rounded-lg border-dashed border-2 border-gray-400 h-screen">
-                    <h1 className='text-2xl'>User - Orders </h1>
-                    <div className="col-md-9">
+      <Navtop title={"User-Orders"} />
+      <MainNav />
+      <UserMenu />
+      <div className="p-4 sm:ml-64">
+        <div className="p-4 rounded-lg border-dashed border-2 border-gray-400 h-screen">
+          <h1 className='text-2xl'>User - Orders </h1>
+          <div className="col-md-9">
             <h1 className="text-center">All Orders</h1>
             {orders?.map((o, i) => {
               return (
-                <div className="">
-                  <table className="">
+                <div className="border shadow">
+                  <table className="table">
                     <thead>
                       <tr>
-                        <th scope="">#</th>
-                        <th scope="">Status</th>
-                        <th scope="">Buyer</th>
-                        <th scope=""> date</th>
-                        <th scope="">Payment</th>
-                        <th scope="">Quantity</th>
+                        <th scope="col">#</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Buyer</th>
+                        <th scope="col"> date</th>
+                        <th scope="col">Payment</th>
+                        <th scope="col">Quantity</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -60,7 +60,7 @@ const UserOrders = () => {
                   </table>
                   <div className="container">
                     {o?.products?.map((p, i) => (
-                      <div className="" key={p._id}>
+                      <div className="row mb-2 p-3 card flex-row justify-around" key={p._id}>
                         <div className="col-md-4">
                           <img
                             src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
@@ -70,7 +70,7 @@ const UserOrders = () => {
                             height={"100px"}
                           />
                         </div>
-                        <div className='' >
+                        <div className="col-md-8 ">
                           <p>{p.name}</p>
                           <p>{p.description.substring(0, 30)}</p>
                           <p>Price : {p.price}</p>
@@ -82,8 +82,8 @@ const UserOrders = () => {
               );
             })}
           </div>
-                </div>
-            </div>
+        </div>
+      </div>
     </>
   )
 }
