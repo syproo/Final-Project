@@ -1,7 +1,22 @@
-import productModel from "../models/productModel.js";
+ import productModel from "../models/productModel.js";
 import categoryModel from "../models/CategoryModel.js"
+import orderModel from "../models/orderModel.js";
+
 import fs from "fs";
 import slugify from "slugify";
+import braintree from "braintree"
+import dotenv from "dotenv";
+
+dotenv.config();
+
+//payment gateway
+var gateway = new braintree.BraintreeGateway({
+    environment: braintree.Environment.Sandbox,
+    merchantId: process.env.BRAINTREE_MERCHANT_ID,
+    publicKey: process.env.BRAINTREE_PUBLIC_KEY ,
+    privateKey: process.env.BRAINTREE_PRIVATE_KEY,
+  });
+  
 
 export const createProductController = async (req, res) => {
     try {
@@ -201,6 +216,54 @@ export const productFiltersController = async (req, res) => {
     }
 }
 
+// search product
+export const searchProductController = async (req, res) => {
+    try {
+      const { keyword } = req.params;
+      const resutls = await productModel
+        .find({
+          $or: [
+            { name: { $regex: keyword, $options: "i" } },
+            { description: { $regex: keyword, $options: "i" } },
+          ],
+        })
+        .select("-photo");
+      res.json(resutls);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send({
+        success: false,
+        message: "Error In Search Product API",
+        error,
+      });
+    }
+  };
+
+//Similar Product Controller
+export const relatedProductController = async (req, res) => {
+    try {
+      const { pid, cid } = req.params;
+      const products = await productModel
+        .find({
+          category: cid,
+          _id: { $ne: pid },
+        }) 
+        .select("-photo")
+        .limit(3)
+        .populate("category");
+      res.status(200).send({
+        success: true,
+        products,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send({
+        success: false,
+        message: "error while geting related product",
+        error,
+      });
+    }
+  };
 // product count
 export const productCountController = async (req, res) => {
     try {
@@ -263,3 +326,53 @@ export const productCategoryController = async (req, res) => {
         });
     }
 };
+
+//payment gateway api
+//token
+export const braintreeTokenController = async (req, res) => {
+    try {
+      gateway.clientToken.generate({}, function (err, response) {
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          res.send(response);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  //payment
+  export const brainTreePaymentController = async (req, res) => {
+    try {
+      const { nonce, cart } = req.body;
+      let total = 0;
+      cart.map((i) => {
+        total += i.price;
+      });
+      let newTransaction = gateway.transaction.sale(
+        {
+          amount: total,
+          paymentMethodNonce: nonce,
+          options: {
+            submitForSettlement: true,
+          },
+        },
+        function (error, result) {
+          if (result) {
+            const order = new orderModel({
+              products: cart,
+              payment: result,
+              buyer: req.user._id,
+            }).save();
+            res.json({ ok: true });
+          } else {
+            res.status(500).send(error);
+          }
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };

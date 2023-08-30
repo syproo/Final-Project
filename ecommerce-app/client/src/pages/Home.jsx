@@ -7,8 +7,14 @@ import axios from "axios";
 import { BsCartPlus } from "react-icons/bs";
 import { Checkbox, Radio } from "antd";
 import { Prices } from "../components/Prices";
+import SearchInput from "../components/forms/SearchInput";
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/Cart";
+import { toast } from "react-hot-toast";
 
 const Home = () => {
+  const [cart, setCart] = useCart()
+  const navigate = useNavigate()
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -75,6 +81,7 @@ const Home = () => {
   //Lifecycle Method
   useEffect(() => {
     if (!checked.length || !radio.length) getAllProducts();
+
   }, [checked.length, radio.length]);
 
   useEffect(() => {
@@ -131,6 +138,12 @@ const Home = () => {
         <Navtop title={"Mercado-Home Page"} />
         <MainNav />
         <Carousal />
+        {/* Single Product page Search input   */}
+        <div> 
+          <h1 className="text-2xl">Search Categories below</h1>
+          <SearchInput />
+        </div>
+        {/*<Carousal />*/}
         <div className="">
           {/*Product Filter by Category */}
           <div className="flex flex-col p-4">
@@ -183,12 +196,25 @@ const Home = () => {
                   <div className="text-lg font-bold underline p-2">
                     {p.name}
                   </div>
+                  <div className="font-bold">
+                  <p className="">
+                    {p.description.substring(0, 60)}...
+                  </p>
+                  </div>
                   <div className="text-md font-semibold">
                     <span>Rs : {p.price}</span>
                   </div>
                   <div className=" ">
                     <div className="p-2">
-                      <button className=" rounded-lg p-2 border-2 border-[#1D5AA3] font-semibold text-white bg-[#1D5AA3] hover:bg-white hover:text-[#1D5AA3] hover:border-[#1D5AA3] transition duration-500 ease-in-out">
+                      <button className=" rounded-lg p-2 border-2 border-white text-white bg-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500"
+                        onClick = {() => {
+                        setCart([...cart, p]);
+                        localStorage.setItem(
+                          "cart",
+                          JSON.stringify([...cart, p])
+                        );
+                        toast.success("Item Added to cart");
+                      }} >
                         <a className="flex gap-2 items-center ">
                           Add to Cart{" "}
                           <span className="text-xl font-bold">
@@ -197,8 +223,8 @@ const Home = () => {
                         </a>
                       </button>
                     </div>
-                    <div className="rounded-lg p-2 border font-semibold text-white bg-[#164990] shadow-md shadow-gray-800 hover:bg-white hover:text-[#164990] hover:border-[#164990]">
-                      <button>Product Description....</button>
+                    <div className="rounded-lg p-2 border text-bold text-white bg-gray-800 shadow-md shadow-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500">
+                      <button onClick={() => navigate(`/product/${p.slug}`)}>Product Description....</button >
                     </div>
                   </div>
                 </div>
@@ -220,7 +246,10 @@ const Home = () => {
           </div>
         </div>
         <Footer />
-      </div>
+      
+        </div>
+
+
     </>
   );
 };

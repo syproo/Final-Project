@@ -1,5 +1,5 @@
 import { NavLink, Link } from "react-router-dom";
-import { useAuth } from "../context/auth.jsx";
+ import { useAuth } from "../context/auth.jsx";
 import toast from "react-hot-toast";
 import useCategory from "../custom Hooks/useCategory.js";
 import { RxAvatar } from "react-icons/rx";
@@ -8,8 +8,10 @@ import { FaShoppingCart } from "react-icons/fa";
 import { BiMenuAltRight } from "react-icons/bi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useState } from "react";
+import { useCart } from "../context/Cart.jsx";
 
 const MainNav = () => {
+  const [cart] = useCart()
   const [auth, setAuth] = useAuth();
   const categories = useCategory();
 
@@ -247,12 +249,8 @@ const MainNav = () => {
                 </details>
               </>
             )}
-            <li className="m-6 flex justify-center items-center">
-              <NavLink to={"/Cart"}>
-                <div className="text-white text-2xl mr-2">
-                  <FaShoppingCart />
-                </div>
-              </NavLink>
+            <li>
+              <NavLink to={"/Cart"}>Cart ( {cart?.length} )</NavLink>
             </li>
           </ul>
         </div>
