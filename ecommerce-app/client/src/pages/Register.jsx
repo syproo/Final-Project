@@ -4,6 +4,7 @@ import Navtop from "../components/Navtop";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Footer from "../components/Footer";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -46,9 +47,9 @@ const Register = () => {
     <div>
       <Navtop title={"Mercado-Sign Up"} />
       <MainNav />
-      <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
-        <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
-          <h1 className="text-3xl font-semibold text-center  underline">
+      <div className="relative flex flex-col justify-center h-[75vh] overflow-hidden bg-gradient-to-b from-[#164990] to-[#276FB7] font-fontApp">
+        <div className="w-96 p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
+          <h1 className="text-3xl font-semibold text-center text-[#164990]">
             Sign Up Form
           </h1>
           <form className="mt-6" onSubmit={handleSubmit}>
@@ -62,7 +63,7 @@ const Register = () => {
                 onChange={(e) => setName(e.target.value)}
                 required
                 placeholder="Enter Your Full Name"
-                className="block w-full px-4 py-2 mt-2  bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                className="block w-full px-4 py-2 mt-2  bg-white border rounded-md focus:border-[#164990] focus:ring-[#164990] focus:outline-none focus:ring "
               />
             </div>
             <div className="mb-2">
@@ -75,7 +76,7 @@ const Register = () => {
                 onChange={(e) => setKey(e.target.value)}
                 required
                 placeholder="Enter your secret key to secure your account"
-                className="block w-full px-4 py-2 mt-2  bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                className="block w-full px-4 py-2 mt-2  bg-white border rounded-md focus:border-[#164990] focus:ring-[#164990] focus:outline-none focus:ring "
               />
             </div>
             <div className="mb-2">
@@ -88,7 +89,7 @@ const Register = () => {
                 onChange={(e) => setPhone(e.target.value)}
                 required
                 placeholder="Enter Your Phone Number"
-                className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                className="block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-[#164990] focus:ring-[#164990] focus:outline-none focus:ring "
               />
             </div>
             <div className="mb-2">
@@ -101,7 +102,7 @@ const Register = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="Enter Your Email"
-                className="block w-full px-4 py-2 mt-2  bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                className="block w-full px-4 py-2 mt-2  bg-white border rounded-md focus:border-[#164990] focus:ring-[#164990] focus:outline-none focus:ring "
               />
             </div>
             <div className="mb-2">
@@ -114,17 +115,19 @@ const Register = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="Enter the Password"
-                className="block w-full px-4 py-2 mt-2  bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                className="block w-full px-4 py-2 mt-2  bg-white border rounded-md focus:border-[#164990] focus:ring-[#164990] focus:outline-none focus:ring "
               />
             </div>
             <div className="mt-6">
-              <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-purple-600">
+              <button className="w-full px-4 py-2 tracking-wide text-black text-lg font-semibold border-2 border-[#164990] transition-colors duration-300 transform bg-white rounded-md hover:bg-[#164990] hover:text-white focus:outline-none focus:bg-[#164990]">
                 Sign Up
               </button>
             </div>
           </form>
         </div>
+        
       </div>
+      <Footer/>
     </div>
   );
 };

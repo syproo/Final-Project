@@ -3,17 +3,16 @@ import AdminMenu from "../../components/AdminMenu";
 import Navtop from "../../components/Navtop";
 import MainNav from "../../components/MainNav";
 import toast from "react-hot-toast";
-import axios from 'axios';
-import CategoryForms from '../../components/forms/CategoryForms';
-import { Modal } from "antd"
-
+import axios from "axios";
+import CategoryForms from "../../components/forms/CategoryForms";
+import { Modal } from "antd";
 
 const CreateCategory = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [visible, setVisible] = useState(false);
-  const [selected, setSelected] = useState(null)
-  const [updatedName, setUpdatedName] = useState("")
+  const [selected, setSelected] = useState(null);
+  const [updatedName, setUpdatedName] = useState("");
 
   //handle submit
   const handleSubmit = async (e) => {
@@ -57,8 +56,11 @@ const CreateCategory = () => {
   // Update category
   const handleUpdate = async (e) => {
     try {
-      e.preventDefault()
-      const { data } = await axios.put(`http://localhost:8080/api/v1/category/update-category/${selected._id}`, { name: updatedName })
+      e.preventDefault();
+      const { data } = await axios.put(
+        `http://localhost:8080/api/v1/category/update-category/${selected._id}`,
+        { name: updatedName }
+      );
       if (data.success) {
         toast.success(`${name} is updated`);
         setSelected(null);
@@ -66,7 +68,7 @@ const CreateCategory = () => {
         setVisible(false);
         getAllcategory();
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error("something went wrong while updating");
@@ -76,12 +78,14 @@ const CreateCategory = () => {
   // Delete category
   const handleDelete = async (pid) => {
     try {
-      const { data } = await axios.delete(`http://localhost:8080/api/v1/category/delete-category/${pid}`)
+      const { data } = await axios.delete(
+        `http://localhost:8080/api/v1/category/delete-category/${pid}`
+      );
       if (data.success) {
         toast.success(`category is deleted`);
         getAllcategory();
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error("something went wrong while Deleting");
@@ -92,77 +96,81 @@ const CreateCategory = () => {
       <Navtop title={"Create - Category"} />
       <MainNav />
       <AdminMenu />
-      <div className="p-4 sm:ml-64">
-        <div className="p-4 rounded-lg border-dashed border-2 border-gray-400 h-screen">
-          <h1 className="text-2xl">Manage Categories </h1>
-          {/* form for Adding new categories */}
-          <div>
-            <CategoryForms
-              handleSubmit={handleSubmit}
-              value={name}
-              setValue={setName}
-            />
+      <div className="p-2 sm:ml-64 font-fontApp">
+        <div className="grid grid-cols-1 w-full grid-flow-row text-center p-2 rounded-lg border-dashed border-2 border-gray-400 h-[80vh] overflow-hidden">
+          <div className="bg-gradient-to-r from-[#164990] to-[#77AEDE] p-2 rounded-md h-full">
+            <div>
+              <h1 className="text-3xl text-white font-semibold mt-4">
+                Create Categories{" "}
+              </h1>
+            </div>
+
+            {/* form for Adding new categories */}
+            <div className="flex w-[100%] p-4 justify-center h-auto">
+              <CategoryForms
+                handleSubmit={handleSubmit}
+                value={name}
+                setValue={setName}
+              />
+            </div>
           </div>
+
           {/* table for categories */}
-          <div>
-            <div className="flex flex-col">
-              <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                  <div className="overflow-hidden">
-                    <table className="min-w-full text-left text-sm font-light">
-                      <thead className="border-b font-medium dark:border-neutral-500">
-                        <tr>
-                          <th scope="col" className="px-6 py-4">
-                            Name
-                          </th>
-                          <th scope="col" className="px-6 py-4">
-                            Actions
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {categories?.map((c) => (
-                          <>
-                            <tr>
-                              <td key={c._id}>{c.name} </td>
-                              <td>
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setVisible(true);
-                                    setUpdatedName(c.name);
-                                    setSelected(c)
-                                  }}
-                                  className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" >
-                                  Edit
-                                </button>
-                              </td>
-                              <td>
-                                <button
-                                  type="button"
-                                  onClick={() => { handleDelete(c._id) }}
-                                  className="inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
-                          </>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
+
+          <div className="">
+            <div className="overflow-x-auto   h-80 mt-2">
+              <table className="table table-pin-rows">
+                <thead className="text-lg sticky top-0">
+                  <tr className="bg-[#164990] text-white">
+                    <th className="font-medium ">S#</th>
+                    <th className="font-medium ">Category</th>
+                    <th className="font-medium ">Edit Category</th>
+                    <th className="font-medium ">Delete Category</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-[#77AEDE]">
+                  {categories?.map((c, Index) => (
+                    <tr key={c._id} className="">
+                      <td>{Index} .</td>
+                      <td> {c.name} </td>
+                      <td>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setVisible(true);
+                            setUpdatedName(c.name);
+                            setSelected(c);
+                          }}
+                          className=" rounded bg-[#164990] px-8 py-2  text-md text-white hover:bg-transparent hover:text-black transition-all duration-300 ease-linear border-[#164990] border "
+                        >
+                          Edit
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            handleDelete(c._id);
+                          }}
+                          className=" rounded bg-[#cf1a0d] px-6 py-2  text-md text-white hover:bg-transparent hover:text-black transition-all duration-300 ease-linear border-[#cf1a0d] border "
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
         {/* modal */}
-        <Modal
-          onCancel={() => setVisible(false)}
-          footer={null}
-          open={visible}
-        >
-          <CategoryForms value={updatedName} setValue={setUpdatedName} handleSubmit={handleUpdate} />
+        <Modal onCancel={() => setVisible(false)} footer={null} open={visible}>
+          <CategoryForms
+            value={updatedName}
+            setValue={setUpdatedName}
+            handleSubmit={handleUpdate}
+          />
         </Modal>
       </div>
     </>

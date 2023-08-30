@@ -9,10 +9,10 @@ const Categories = () => {
       <Navtop title={"All Categories"} />
       <MainNav/>
       <div className="" >
-        <div className="w-96">
+        <div className="w-full h-auto p-4 border-2 border-red-400 flex justify-center items-center content-center">
           {categories.map((c) => (
-            <div className="col-md-4 mt-5 mb-3 gx-3 gy-3" key={c._id}>
-              <div className="card">
+            <div className="" key={c._id}>
+              <div className="">
                 <Link to={`/category/${c.slug}`} className="btn cat-btn">
                   {c.name}
                 </Link>

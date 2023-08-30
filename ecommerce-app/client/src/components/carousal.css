@@ -1,12 +1,14 @@
 html,
 body {
   position: relative;
-  width: 100%;
-  height: 100%;
+  top:60px;
+  max-width: 100vw;
+  
+  
 }
 
 body {
-  background: #eee;
+  background: white;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 14px;
   color: #000;
@@ -16,7 +18,7 @@ body {
 
 .swiper {
   width: 100%;
-  height: 60vh;
+  height: 100%;
 }
 
 .swiper-slide {
@@ -47,4 +49,11 @@ body {
 
 .swiper-slide:nth-child(3n) {
   width: 20%;
+}
+
+@media only screen and (max-width: 768px) {
+  html,
+  body {
+    top: 75px;
+  }
 }
