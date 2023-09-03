@@ -8,6 +8,9 @@ import DropIn from "braintree-web-drop-in-react";
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 
+// code for modal
+import { Modal } from "antd"
+import AddressInput from '../components/forms/AddresInput'
 
 const CartPage = () => {
   const [cart, setCart] = useCart()
@@ -16,6 +19,9 @@ const CartPage = () => {
   const [instance, setInstance] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
+
+  // code for modal
+  const [visible, setVisible] = useState(false);
 
   //detele item
   const removeCartItem = (pid) => {
@@ -59,8 +65,8 @@ const CartPage = () => {
     getToken();
   }, [auth?.token]);
 
-   //handle payments
-   const handlePayment = async () => {
+  //handle payments
+  const handlePayment = async () => {
     try {
       setLoading(true);
       const { nonce } = await instance.requestPaymentMethod();
@@ -131,12 +137,15 @@ const CartPage = () => {
           <hr />
           <h1>Total: {totalPrice()}</h1>
           <div className='p-5'>
+            {/* code for enter address */}
             {auth?.token ? (
               <button
                 className="inline-block rounded bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
-                onClick={() => navigate("/dashboard/user/profile")}
+                onClick={() => {
+                  setVisible(true);
+                }}
               >
-                Update Phone No
+                Enter your Full Address
               </button>
             ) : (
               <button
@@ -147,7 +156,7 @@ const CartPage = () => {
                   })
                 }
               >
-                Plase Login to checkout
+                Please Login to checkout
               </button>
             )}
           </div>
@@ -169,7 +178,7 @@ const CartPage = () => {
                 <button
                   className="btn btn-primary"
                   onClick={handlePayment}
-                  disabled={loading || !instance || !auth?.user?.phone}
+                  disabled={loading || !instance}
                 >
                   {loading ? "Processing ...." : "Make Payment"}
                 </button>
@@ -178,6 +187,15 @@ const CartPage = () => {
           </div>
         </div>
       </div>
+      {/* modal */}
+      <Modal
+        onCancel={() => setVisible(false)}
+        footer={null}
+        open={visible}
+      >
+        <AddressInput />
+
+      </Modal>
     </div>
   )
 }
