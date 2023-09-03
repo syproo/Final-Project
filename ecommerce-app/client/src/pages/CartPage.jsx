@@ -36,20 +36,37 @@ const CartPage = () => {
     }
   };
 
-  //total price
-  const totalPrice = () => {
-    try {
-      let total = 0;
-      cart?.map((item) => {
-        total = total + item.price;
-      });
-      return total.toLocaleString("pak-Urdu", {
-        style: "currency",
-        currency: "PKR",
-      });
-    } catch (error) {
-      console.log(error);
+  //   // Function to decrease the quantity of a product
+  const changeItemQuantity = (productId, change) => {
+    // Find the product in the cart
+    const productIndex = cart.findIndex((item) => item._id === productId);
+
+    if (productIndex !== -1) {
+      // If the product exists in the cart
+      const updatedCart = [...cart];
+      updatedCart[productIndex].quantity += change;
+
+      if (updatedCart[productIndex].quantity <= 0) {
+        // Remove the product from the cart if quantity is less than or equal to 0
+        updatedCart.splice(productIndex, 1);
+      }
+
+      setCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
+  };
+
+
+  // Function to calculate the total price
+  const calculateTotalPrice = () => {
+    let total = 0;
+    cart?.forEach((item) => {
+      total += item.price * item.quantity;
+    });
+    return total.toLocaleString("pak-Urdu", {
+      style: "currency",
+      currency: "PKR",
+    });
   };
 
   //get payment gateway token
@@ -115,10 +132,28 @@ const CartPage = () => {
                     alt={p.name}
                   />
                 </div>
-                <div className='ps-5 pe-5'>
+                <div className='ps-5 pe-5 '>
                   <p>{p.name}</p>
                   <p>{p.description.substring(0, 30)}</p>
                   <p>{p.price}</p>
+                  <div className='flex justify-between'>
+                    <button
+                      type="button"
+                      class="inline-block rounded-full border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+                      onClick={() => changeItemQuantity(p._id, -1)}
+                      disabled={p.quantity < 1}
+                    >
+                      minus
+                    </button>
+                    <span className='w-10 text-center text-bold text-xl'>{p.quantity}</span>
+                    <button
+                      type="button"
+                      class="inline-block rounded-full border-2 border-success px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-success transition duration-150 ease-in-out hover:border-success-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-success-600 focus:border-success-600 focus:text-success-600 focus:outline-none focus:ring-0 active:border-success-700 active:text-success-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+                      onClick={() => changeItemQuantity(p._id, 1)}
+                    >
+                      plus
+                    </button>
+                  </div>
                   <button
                     type="button"
                     onClick={() => removeCartItem(p._id)}
@@ -135,7 +170,7 @@ const CartPage = () => {
           <h1 className='text-2xl'>Cart Summary </h1>
           <p>Total | Checkout | payment</p>
           <hr />
-          <h1>Total: {totalPrice()}</h1>
+          <h1>Total: {calculateTotalPrice()}</h1>
           <div className='p-5'>
             {/* code for enter address */}
             {auth?.token ? (

@@ -132,6 +132,24 @@ const Home = () => {
     }
   };
 
+  // Function to add a product to the cart
+  const addToCart = (product) => {
+    const existingItemIndex = cart.findIndex((item) => item._id === product._id);
+
+    if (existingItemIndex !== -1) {
+      // If the product is already in the cart, update its quantity
+      const updatedCart = [...cart];
+      updatedCart[existingItemIndex].quantity += 1;
+      setCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    } else {
+      // If the product is not in the cart, add it with quantity 1
+      setCart([...cart, { ...product, quantity: 1 }]);
+      localStorage.setItem("cart", JSON.stringify([...cart, { ...product, quantity: 1 }]));
+    }
+
+    toast.success("Item Added to cart");
+  };
   return (
     <>
       <div className="font-fontApp">
@@ -139,7 +157,7 @@ const Home = () => {
         <MainNav />
         <Carousal />
         {/* Single Product page Search input   */}
-        <div> 
+        <div>
           <h1 className="text-2xl">Search Categories below</h1>
           <SearchInput />
         </div>
@@ -197,9 +215,9 @@ const Home = () => {
                     {p.name}
                   </div>
                   <div className="font-bold">
-                  <p className="">
-                    {p.description.substring(0, 60)}...
-                  </p>
+                    <p className="">
+                      {p.description.substring(0, 60)}...
+                    </p>
                   </div>
                   <div className="text-md font-semibold">
                     <span>Rs : {p.price}</span>
@@ -207,14 +225,7 @@ const Home = () => {
                   <div className=" ">
                     <div className="p-2">
                       <button className=" rounded-lg p-2 border-2 border-white text-white bg-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500"
-                        onClick = {() => {
-                        setCart([...cart, p]);
-                        localStorage.setItem(
-                          "cart",
-                          JSON.stringify([...cart, p])
-                        );
-                        toast.success("Item Added to cart");
-                      }} >
+                        onClick={() => addToCart(p)} >
                         <a className="flex gap-2 items-center ">
                           Add to Cart{" "}
                           <span className="text-xl font-bold">
@@ -246,8 +257,8 @@ const Home = () => {
           </div>
         </div>
         <Footer />
-      
-        </div>
+
+      </div>
 
 
     </>
