@@ -1,9 +1,16 @@
 import express from "express";
-import { getAllOrdersController, getOrdersController, orderStatusController, registerController, updateProfileController } from "../controllers/authController.js";
+import {
+  addressInfoController,
+  getAllOrdersController,
+  getOrdersController,
+  orderStatusController,
+  registerController,
+  updateProfileController,
+} from "../controllers/authController.js";
 import {
   loginController,
   testController,
-  forgotPasswordController
+  forgotPasswordController,
 } from "../controllers/authController.js";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddlewareJWT.js";
 
@@ -26,15 +33,15 @@ router.get("/test", requireSignIn, isAdmin, testController);
 
 //Protected Route for Dashboard -Method Get
 router.get("/user-auth", requireSignIn, (req, res) => {
-  res.status(200).send({ ok: true })
+  res.status(200).send({ ok: true });
 });
 //Protected Route for  Admin Dashboard -Method Get
-router.get("/admin-auth", requireSignIn,isAdmin, (req,res)=>{
-  res.status(200).send({ok:true})
+router.get("/admin-auth", requireSignIn, isAdmin, (req, res) => {
+  res.status(200).send({ ok: true });
 });
 
 // Routes to Update User Profile
-router.put("/profile", requireSignIn, updateProfileController)
+router.put("/profile", requireSignIn, updateProfileController);
 
 //orders
 router.get("/orders", requireSignIn, getOrdersController);
@@ -49,4 +56,8 @@ router.put(
   isAdmin,
   orderStatusController
 );
+
+// Address info
+router.post("/address", requireSignIn, addressInfoController);
+
 export default router;

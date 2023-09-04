@@ -8,6 +8,9 @@ import DropIn from "braintree-web-drop-in-react";
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 
+// code for modal
+import { Modal } from "antd"
+import AddressInput from '../components/forms/AddresInput'
 
 const CartPage = () => {
   const [cart, setCart] = useCart()
@@ -16,6 +19,9 @@ const CartPage = () => {
   const [instance, setInstance] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
+
+  // code for modal
+  const [visible, setVisible] = useState(false);
 
   //detele item
   const removeCartItem = (pid) => {
@@ -30,20 +36,37 @@ const CartPage = () => {
     }
   };
 
-  //total price
-  const totalPrice = () => {
-    try {
-      let total = 0;
-      cart?.map((item) => {
-        total = total + item.price;
-      });
-      return total.toLocaleString("pak-Urdu", {
-        style: "currency",
-        currency: "PKR",
-      });
-    } catch (error) {
-      console.log(error);
+  //   // Function to decrease the quantity of a product
+  const changeItemQuantity = (productId, change) => {
+    // Find the product in the cart
+    const productIndex = cart.findIndex((item) => item._id === productId);
+
+    if (productIndex !== -1) {
+      // If the product exists in the cart
+      const updatedCart = [...cart];
+      updatedCart[productIndex].quantity += change;
+
+      if (updatedCart[productIndex].quantity <= 0) {
+        // Remove the product from the cart if quantity is less than or equal to 0
+        updatedCart.splice(productIndex, 1);
+      }
+
+      setCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
+  };
+
+
+  // Function to calculate the total price
+  const calculateTotalPrice = () => {
+    let total = 0;
+    cart?.forEach((item) => {
+      total += item.price * item.quantity;
+    });
+    return total.toLocaleString("pak-Urdu", {
+      style: "currency",
+      currency: "PKR",
+    });
   };
 
   //get payment gateway token
@@ -59,8 +82,8 @@ const CartPage = () => {
     getToken();
   }, [auth?.token]);
 
-   //handle payments
-   const handlePayment = async () => {
+  //handle payments
+  const handlePayment = async () => {
     try {
       setLoading(true);
       const { nonce } = await instance.requestPaymentMethod();
@@ -109,10 +132,28 @@ const CartPage = () => {
                     alt={p.name}
                   />
                 </div>
-                <div className='ps-5 pe-5'>
+                <div className='ps-5 pe-5 '>
                   <p>{p.name}</p>
                   <p>{p.description.substring(0, 30)}</p>
                   <p>{p.price}</p>
+                  <div className='flex justify-between'>
+                    <button
+                      type="button"
+                      class="inline-block rounded-full border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+                      onClick={() => changeItemQuantity(p._id, -1)}
+                      disabled={p.quantity < 1}
+                    >
+                      minus
+                    </button>
+                    <span className='w-10 text-center text-bold text-xl'>{p.quantity}</span>
+                    <button
+                      type="button"
+                      class="inline-block rounded-full border-2 border-success px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-success transition duration-150 ease-in-out hover:border-success-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-success-600 focus:border-success-600 focus:text-success-600 focus:outline-none focus:ring-0 active:border-success-700 active:text-success-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+                      onClick={() => changeItemQuantity(p._id, 1)}
+                    >
+                      plus
+                    </button>
+                  </div>
                   <button
                     type="button"
                     onClick={() => removeCartItem(p._id)}
@@ -129,14 +170,17 @@ const CartPage = () => {
           <h1 className='text-2xl'>Cart Summary </h1>
           <p>Total | Checkout | payment</p>
           <hr />
-          <h1>Total: {totalPrice()}</h1>
+          <h1>Total: {calculateTotalPrice()}</h1>
           <div className='p-5'>
+            {/* code for enter address */}
             {auth?.token ? (
               <button
                 className="inline-block rounded bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
-                onClick={() => navigate("/dashboard/user/profile")}
+                onClick={() => {
+                  setVisible(true);
+                }}
               >
-                Update Phone No
+                Enter your Full Address
               </button>
             ) : (
               <button
@@ -147,7 +191,7 @@ const CartPage = () => {
                   })
                 }
               >
-                Plase Login to checkout
+                Please Login to checkout
               </button>
             )}
           </div>
@@ -169,7 +213,7 @@ const CartPage = () => {
                 <button
                   className="btn btn-primary"
                   onClick={handlePayment}
-                  disabled={loading || !instance || !auth?.user?.phone}
+                  disabled={loading || !instance}
                 >
                   {loading ? "Processing ...." : "Make Payment"}
                 </button>
@@ -178,6 +222,15 @@ const CartPage = () => {
           </div>
         </div>
       </div>
+      {/* modal */}
+      <Modal
+        onCancel={() => setVisible(false)}
+        footer={null}
+        open={visible}
+      >
+        <AddressInput />
+
+      </Modal>
     </div>
   )
 }
