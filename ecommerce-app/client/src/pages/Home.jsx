@@ -13,8 +13,8 @@ import { useCart } from "../context/Cart";
 import { toast } from "react-hot-toast";
 
 const Home = () => {
-  const [cart, setCart] = useCart()
-  const navigate = useNavigate()
+  const [cart, setCart] = useCart();
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -81,7 +81,6 @@ const Home = () => {
   //Lifecycle Method
   useEffect(() => {
     if (!checked.length || !radio.length) getAllProducts();
-
   }, [checked.length, radio.length]);
 
   useEffect(() => {
@@ -139,7 +138,7 @@ const Home = () => {
         <MainNav />
         <Carousal />
         {/* Single Product page Search input   */}
-        <div> 
+        <div>
           <h1 className="text-2xl">Search Categories below</h1>
           <SearchInput />
         </div>
@@ -197,24 +196,24 @@ const Home = () => {
                     {p.name}
                   </div>
                   <div className="font-bold">
-                  <p className="">
-                    {p.description.substring(0, 60)}...
-                  </p>
+                    <p className="">{p.description.substring(0, 60)}...</p>
                   </div>
                   <div className="text-md font-semibold">
                     <span>Rs : {p.price}</span>
                   </div>
                   <div className=" ">
                     <div className="p-2">
-                      <button className=" rounded-lg p-2 border-2 border-white text-white bg-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500"
-                        onClick = {() => {
-                        setCart([...cart, p]);
-                        localStorage.setItem(
-                          "cart",
-                          JSON.stringify([...cart, p])
-                        );
-                        toast.success("Item Added to cart");
-                      }} >
+                      <button
+                        className=" rounded-lg p-2 border-2 border-white text-white bg-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500"
+                        onClick={() => {
+                          setCart([...cart, p]);
+                          localStorage.setItem(
+                            "cart",
+                            JSON.stringify([...cart, p])
+                          );
+                          toast.success("Item Added to cart");
+                        }}
+                      >
                         <a className="flex gap-2 items-center ">
                           Add to Cart{" "}
                           <span className="text-xl font-bold">
@@ -224,7 +223,9 @@ const Home = () => {
                       </button>
                     </div>
                     <div className="rounded-lg p-2 border text-bold text-white bg-gray-800 shadow-md shadow-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500">
-                      <button onClick={() => navigate(`/product/${p.slug}`)}>Product Description....</button >
+                      <button onClick={() => navigate(`/product/${p.slug}`)}>
+                        Product Description....
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -246,10 +247,7 @@ const Home = () => {
           </div>
         </div>
         <Footer />
-      
-        </div>
-
-
+      </div>
     </>
   );
 };

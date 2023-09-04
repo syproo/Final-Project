@@ -4,9 +4,6 @@ import Navtop from "../../components/Navtop";
 import MainNav from "../../components/MainNav";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { Select, Input } from "antd";
-import { Option } from "antd/es/mentions";
-import TextArea from "antd/es/input/TextArea";
 import { useNavigate, useParams } from "react-router-dom";
 
 const UpdateProduct = () => {
@@ -29,7 +26,7 @@ const UpdateProduct = () => {
       const { data } = await axios.get(
         `http://localhost:8080/api/v1/product/single-product/${params.slug}`
       );
-      setCategory(data.product.category._id);
+      setCategory(data.product.category);
       setName(data.product.name);
       setDescription(data.product.description);
       setPrice(data.product.price);
@@ -94,12 +91,11 @@ const UpdateProduct = () => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const answer = window.prompt(
-        "Are you sure want to delete this product ?"
-      );
-      if (!answer) {
+      const answer = window.alert("Are you sure want to delete this product ?");
+      if (!answer === "yes") {
         return;
       }
+      // eslint-disable-next-line no-unused-vars
       const { data } = await axios.delete(
         `http://localhost:8080/api/v1/product/delete-product/${id}`
       );
@@ -113,134 +109,138 @@ const UpdateProduct = () => {
 
   return (
     <>
-      <Navtop title={"Create-product "} />
+      <Navtop title={"Edit-Product "} />
       <MainNav />
       <AdminMenu />
-      <div className="p-4 sm:ml-64">
-        <div className="p-4 rounded-lg border-dashed border-2 border-gray-400 w-[100%] h-screen">
-          <h1 className="text-2xl">Update product </h1>
-          <div className=" w-96">
-            <Select
-              bordered={false}
-              placeholder="Update Category"
-              size="large"
-              onChange={(val) => {
-                setCategory(val);
-              }}
-              className="mb-3"
-              value={category}
-            >
-              {categories?.map((c) => (
-                <Option key={c._id} value={c._id}>
-                  {c.name}
-                </Option>
-              ))}
-            </Select>
+      <div className="p-4 sm:ml-64 font-fontApp">
+        <div className="p-2 rounded-lg border-dashed border-2 border-[#164990] w-full h-full overflow-hidden">
+          <div className="grid justify-center w-[100%] h-auto   p-12  bg-gradient-to-r from-[#164990] to-[#77AEDE] rounded">
+            <h1 className="text-3xl text-center text-white font-semibold p-2">
+              Edit Product{" "}
+            </h1>
+            <div className="space-y-2">
+              <div className="form-control md:w-96">
+                <select
+                  className="select border-[#164990] focus:outline-none"
+                  onChange={(value) => {
+                    setCategory(value);
+                  }}
+                  value={category}
+                >
+                  {categories?.map((c) => (
+                    <option key={c._id} value={c._id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            {/*Product Name*/}
-            <div className="p-2">
-              <Input
-                size=""
-                type="text"
-                value={name}
-                placeholder="Update Product name"
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-
-            {/*Product Description*/}
-            <div className="p-2">
-              <TextArea
-                showCount
-                maxLength={200}
-                type="text"
-                value={description}
-                placeholder="Update Product Description"
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </div>
-
-            {/*Product Price*/}
-            <div className="p-2">
-              <Input
-                size=""
-                type="text"
-                value={price}
-                placeholder="Update Product Price"
-                onChange={(e) => setPrice(e.target.value)}
-              />
-            </div>
-
-            {/*Product Quantity*/}
-            <div className="p-2">
-              <Input
-                size=""
-                controls={true}
-                type="number"
-                value={quantity}
-                placeholder="Update Quantity"
-                onChange={(e) => setQuantity(e.target.value)}
-              />
-            </div>
-
-            {/*Product Shipping*/}
-            <div className="p-2">
-              <Select
-                bordered={false}
-                size="large"
-                showSearch
-                type="text"
-                placeholder="Update Shipping"
-                onChange={(value) => {
-                  setShipping(value);
-                }}
-                value={shipping ? "Yes" : "No"}
-                className="w-96"
-              >
-                <Select.Option value="0">No</Select.Option>
-                <Select.Option value="1">Yes</Select.Option>
-              </Select>
-            </div>
-
-            {/*Upload Photo*/}
-            <div className="p-2">
-              <label className="flex justify-center p-2 border border-red-600 rounded-lg ">
-                {photo ? photo.name : "Update Product Photo"}
+              {/*Product Name*/}
+              <div className="form-control">
                 <input
-                  type="file"
-                  name="photo"
-                  accept="image/*"
-                  onChange={(e) => setPhoto(e.target.files[0])}
-                  hidden
+                  className="input border-[#164990] focus:outline-none "
+                  type="text"
+                  value={name}
+                  placeholder="Edit Product name"
+                  onChange={(e) => setName(e.target.value)}
                 />
-              </label>
-            </div>
-            <div>
-              {photo ? (
-                <div className="grid  justify-center">
-                  <img
-                    src={URL.createObjectURL(photo)}
-                    alt="Product Photo"
-                    className="h-40 "
+              </div>
+
+              {/*Product Description*/}
+              <div className="form-control">
+                <textarea
+                  className="textarea border-[#164990] focus:outline-none h-32 "
+                  type="text"
+                  value={description}
+                  placeholder="Edit Product Description"
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
+
+              {/*Product Price*/}
+              <div className="form-control">
+                <input
+                  className="input border-[#164990] focus:outline-none "
+                  type="number"
+                  value={price}
+                  placeholder="Edit Product Price"
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+              </div>
+
+              {/*Product Quantity*/}
+              <div className="form-control">
+                <input
+                  className="input border-[#164990] focus:outline-none "
+                  type="number"
+                  value={quantity}
+                  placeholder="Edit Quantity"
+                  onChange={(e) => setQuantity(e.target.value)}
+                />
+              </div>
+
+              {/*Product Shipping*/}
+              <div className="form-control">
+                <select
+                  className="select border-[#164990] focus:outline-none"
+                  type="text"
+                  placeholder="Edit Shipping"
+                  onChange={(value) => {
+                    setShipping(value);
+                  }}
+                  value={shipping ? "Yes" : "No"}
+                >
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+
+              {/*Upload Photo*/}
+              <div className="form-control w-full">
+                <label className="flex justify-center p-2 border border-[#164990] rounded-lg cursor-pointer hover:bg-[#164990] text-white transition-all duration-300 ease-linear">
+                  {photo ? photo.name : "Update Product Photo"}
+                  <input
+                    type="file"
+                    name="photo"
+                    accept="image/*"
+                    onChange={(e) => setPhoto(e.target.files[0])}
+                    hidden
                   />
-                </div>
-              ) : (
-                <div className="grid  justify-center">
-                  <img
-                    src={`http://localhost:8080/api/v1/product/product-photo/${id}`}
-                    alt="Product Photo"
-                    className="h-40 "
-                  />
-                </div>
-              )}
-            </div>
-            <div className="flex justify-center gap-8 p-4">
-              <button className="p-2 bg-gray-400" onClick={handleUpdate}>
-                Update Product
-              </button>
-              <button className="p-2 bg-gray-400" onClick={handleDelete}>
-                Delete Product
-              </button>
+                </label>
+              </div>
+              <div>
+                {photo ? (
+                  <div className="grid  justify-center overflow-hidden bg-contain bg-no-repeat rounded-lg">
+                    <img
+                      src={URL.createObjectURL(photo)}
+                      alt="Product Photo"
+                      className="object-fit w-40 h-36 rounded-lg"
+                    />
+                  </div>
+                ) : (
+                  <div className="grid  justify-center overflow-hidden bg-contain bg-no-repeat rounded-lg">
+                    <img
+                      src={`http://localhost:8080/api/v1/product/product-photo/${id}`}
+                      alt="Product Photo"
+                      className="object-fit w-40 h-36 rounded-lg "
+                    />
+                  </div>
+                )}
+              </div>
+              <div className="flex justify-between gap-8 p-4">
+                <button
+                  className="rounded bg-[#164990] px-2 py-2 text-md text-white hover:bg-transparent transition-all duration-300 ease-linear border-[#164990] border"
+                  onClick={handleUpdate}
+                >
+                  Update Product
+                </button>
+                <button
+                  className="rounded bg-[#cf1a0d] px-2 py-2 text-md text-white hover:bg-transparent transition-all duration-300 ease-linear border-[#164990] border"
+                  onClick={handleDelete}
+                >
+                  Delete Product
+                </button>
+              </div>
             </div>
           </div>
         </div>

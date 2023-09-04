@@ -96,9 +96,9 @@ const CreateCategory = () => {
       <Navtop title={"Create - Category"} />
       <MainNav />
       <AdminMenu />
-      <div className="p-2 sm:ml-64 font-fontApp">
-        <div className="grid grid-cols-1 w-full grid-flow-row text-center p-2 rounded-lg border-dashed border-2 border-gray-400 h-[80vh] overflow-hidden">
-          <div className="bg-gradient-to-r from-[#164990] to-[#77AEDE] p-2 rounded-md h-full">
+      <div className="p-4 sm:ml-64 font-fontApp">
+        <div className="grid grid-cols-1 w-full grid-flow-row text-center p-2 mt-2 rounded-lg border-dashed border-2 border-[#164990] h-auto overflow-hidden">
+          <div className="bg-gradient-to-r from-[#164990] to-[#77AEDE] p-4 rounded-md h-auto">
             <div>
               <h1 className="text-3xl text-white font-semibold mt-4">
                 Create Categories{" "}

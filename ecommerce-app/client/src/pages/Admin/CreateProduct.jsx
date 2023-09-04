@@ -4,8 +4,6 @@ import Navtop from "../../components/Navtop";
 import MainNav from "../../components/MainNav";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { Select, Input } from "antd";
-import TextArea from "antd/es/input/TextArea";
 import { useNavigate } from "react-router-dom";
 
 const CreateProduct = () => {
@@ -15,7 +13,7 @@ const CreateProduct = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
-  // eslint-disable-next-line no-unused-vars
+
   const [shipping, setShipping] = useState("");
   const [photo, setPhoto] = useState("");
 
@@ -25,7 +23,7 @@ const CreateProduct = () => {
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:8080/api/v1/category/get-category"
+        `http://localhost:8080/api/v1/category/get-category`
       );
       if (data?.success) {
         setCategories(data?.category);
@@ -52,8 +50,8 @@ const CreateProduct = () => {
       productData.append("photo", photo);
       productData.append("category", category);
       const { data } = await axios.post(
-        "http://localhost:8080/api/v1/product/create-product",
-        productData
+        `http://localhost:8080/api/v1/product/create-product`,
+         productData
       );
       if (data.success) {
         toast.success("Product Created Successfully");
@@ -69,58 +67,59 @@ const CreateProduct = () => {
 
   return (
     <>
-      <Navtop title={"Create-product "} />
+      <Navtop title={"Create-Product "} />
       <MainNav />
       <AdminMenu />
-      <div className="p-4 sm:ml-64">
-        <div className="p-4 rounded-lg border-dashed border-2 border-gray-400 w-[100%] h-screen">
-          <h1 className="text-2xl">Create product </h1>
-          <div className=" w-96">
-            <Select
-              bordered={false}
-              placeholder="Select a Category"
-              showSearch
-              size="large"
-              onChange={(value) => {
-                setCategory(value);
-              }}
-              className="mb-3"
-            >
-              {categories?.map((c) => (
-                <Select.Option key={c._id} value={c._id}>
-                  {c.name}
-                </Select.Option>
-              ))}
-            </Select>
+      <div className="p-4 sm:ml-64 font-fontApp ">
+        <div className="p-2 rounded-lg border-dashed border-2 border-[#164990] w-full h-screen">
+          <div className="grid justify-center w-[100%] h-full  p-12  bg-gradient-to-r from-[#164990] to-[#77AEDE] rounded">
+            <h1 className="text-3xl text-center text-white font-semibold p-2">
+              Add New Product{" "}
+            </h1>
+            <div className="form-control  md:w-96">
+              <select
+              
+                className="select border-[#164990] focus:outline-none"
+                onChange={(value) => {
+                  setCategory(value);
+                }}
+              >
+                
+                {categories?.map((c) => (
+                  <option key={c._id} value={c._id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             {/*Product Name*/}
-            <div className="p-2">
-              <Input
-                size=""
+            <div className="form-control">
+              <input
+                className="input border-[#164990] focus:outline-none "
                 type="text"
                 value={name}
-                placeholder="Write a product name"
+                placeholder="Write Product Name"
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
 
             {/*Product Description*/}
-            <div className="p-2">
-              <TextArea
-                showCount
-                maxLength={200}
+            <div className="form-control">
+              <textarea
+                className="textarea border-[#164990] focus:outline-none h-32 "
                 type="text"
                 value={description}
-                placeholder="Write a product Description"
+                placeholder="Write Product Description"
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
 
             {/*Product Price*/}
-            <div className="p-2">
-              <Input
-                size=""
-                type="text"
+            <div className="form-control">
+              <input
+                className="input border-[#164990] focus:outline-none "
+                type="number"
                 value={price}
                 placeholder="Write Product Price"
                 onChange={(e) => setPrice(e.target.value)}
@@ -128,10 +127,9 @@ const CreateProduct = () => {
             </div>
 
             {/*Product Quantity*/}
-            <div className="p-2">
-              <Input
-                size=""
-                controls={true}
+            <div className="form-control">
+              <input
+                className="input border-[#164990] focus:outline-none "
                 type="number"
                 value={quantity}
                 placeholder="Insert Quantity"
@@ -140,29 +138,31 @@ const CreateProduct = () => {
             </div>
 
             {/*Product Shipping*/}
-            <div className="p-2">
-              <Select
-                bordered={false}
-                size="large"
-                showSearch
-                type="text"
+            <div className="form-control ">
+              <select
                 placeholder="Select Shipping"
                 onChange={(value) => {
                   setShipping(value);
                 }}
-                className="w-96"
+                value={shipping}
+                className="select border-[#164990] focus:outline-none"
               >
-                <Select.Option value="0">No</Select.Option>
-                <Select.Option value="1">Yes</Select.Option>
-              </Select>
+                <option disabled selected>
+                  Select Shipping Status
+                </option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
             </div>
 
             {/*Upload Photo*/}
-            <div className="p-2">
-              <label className="flex justify-center p-2 border border-red-600 rounded-lg ">
+            <div className="form-control w-full">
+              <label className="flex justify-center p-2 border border-[#164990] rounded-lg cursor-pointer hover:bg-[#164990] text-white transition-all duration-300 ease-linear">
                 {photo ? photo.name : "Upload Photo"}
                 <input
+                  className="file-input file-input-bordered w-full text"
                   type="file"
+                 
                   name="photo"
                   accept="image/*"
                   onChange={(e) => setPhoto(e.target.files[0])}
@@ -170,19 +170,22 @@ const CreateProduct = () => {
                 />
               </label>
             </div>
-            <div>
+            <div className="">
               {photo && (
-                <div className="grid  justify-center">
+                <div className="grid  justify-center overflow-hidden bg-contain bg-no-repeat rounded-lg">
                   <img
                     src={URL.createObjectURL(photo)}
                     alt="Product Photo"
-                    className="h-40 "
+                    className="object-fit w-36 h-32 rounded-lg "
                   />
                 </div>
               )}
             </div>
-            <div>
-              <button className="p-2 bg-gray-400" onClick={handleCreate}>
+            <div className="grid justify-center">
+              <button
+                className="rounded bg-[#164990] px-6 py-1   text-lg text-white hover:bg-transparent transition-all duration-300 ease-linear border-[#164990] border"
+                onClick={handleCreate}
+              >
                 Create Product
               </button>
             </div>

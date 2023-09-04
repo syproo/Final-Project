@@ -3,7 +3,7 @@ import React from "react";
 const CategoryForms = ({ handleSubmit, value, setValue }) => {
   return (
     <>
-      <div className="block w-full h-44 rounded-lg bg-white p-10 font-fontApp shadow-md shadow-neutral">
+      <div className="block w-full h-40 rounded-lg bg-white p-10 font-fontApp shadow-md shadow-neutral">
         <form onSubmit={handleSubmit}>
           {/*E-mail input*/}
           <div className="relative mb-4">

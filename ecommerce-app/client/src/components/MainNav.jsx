@@ -1,5 +1,5 @@
 import { NavLink, Link } from "react-router-dom";
- import { useAuth } from "../context/auth.jsx";
+import { useAuth } from "../context/auth.jsx";
 import toast from "react-hot-toast";
 import useCategory from "../custom Hooks/useCategory.js";
 import { RxAvatar } from "react-icons/rx";
@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useCart } from "../context/Cart.jsx";
 
 const MainNav = () => {
-  const [cart] = useCart()
+  const [cart] = useCart();
   const [auth, setAuth] = useAuth();
   const categories = useCategory();
 
@@ -129,8 +129,9 @@ const MainNav = () => {
                     <ul className=" bg-white menu dropdown-content mt-3 z-[1] rounded-box w-44 shadow-sm shadow-current">
                       <li>
                         <NavLink
-                          to={`/dashboard/${auth?.user?.role === 1 ? `admin` : `user`
-                            }`}
+                          to={`/dashboard/${
+                            auth?.user?.role === 1 ? `admin` : `user`
+                          }`}
                           className="hover:bg-[#164990] hover:text-white rounded transition duration-300 ease-in-out"
                         >
                           Dashboard
@@ -151,8 +152,12 @@ const MainNav = () => {
               )}
               <li>
                 <NavLink to={"/Cart"}>
-                  <div className="text-[#164990]  text-2xl mr-2 border-2 border-[#164990] rounded-full p-2 hover:bg-[#164990] hover:text-white transition duration-300 ease-in-out shadow-sm shadow-[#164990]">
+                  <div className="text-[#164990]  text-xl mr-2  rounded-full p-4 hover:bg-[#164990] hover:text-white transition duration-300 ease-in-out shadow-sm shadow-[#164990]">
                     <FaShoppingCart />
+                    <span className="text-sm absolute top-6">
+                      {" "}
+                      {cart?.length}{" "}
+                    </span>
                   </div>
                 </NavLink>
               </li>
@@ -162,8 +167,9 @@ const MainNav = () => {
           {/*Mobile Navbar*/}
 
           <ul
-            className={`md:hidden fixed top-36 text-lg text-white flex flex-col items-center font-semibold p-8 w-full h-screen bg-[#1D5AA3] ${mobileNav ? "left-[0]" : "left-[-100%] "
-              } duration-500 `}
+            className={`md:hidden fixed top-36 text-lg text-white flex flex-col items-center font-semibold p-8 w-full h-screen bg-[#1D5AA3] ${
+              mobileNav ? "left-[0]" : "left-[-100%] "
+            } duration-500 `}
           >
             <li className="m-4">
               <NavLink to={"/"}>Home</NavLink>
@@ -229,8 +235,9 @@ const MainNav = () => {
                   <ul className=" menu dropdown-content mt-3 z-[1]  rounded-box w-52 bg-white text-black">
                     <li className="">
                       <NavLink
-                        to={`/dashboard/${auth?.user?.role === 1 ? `admin` : `user`
-                          }`}
+                        to={`/dashboard/${
+                          auth?.user?.role === 1 ? `admin` : `user`
+                        }`}
                         className="hover:bg-[#164990] hover:text-white rounded-md transition duration-200 ease-in-out"
                       >
                         Dashboard
@@ -250,7 +257,15 @@ const MainNav = () => {
               </>
             )}
             <li>
-              <NavLink to={"/Cart"}>Cart ( {cart?.length} )</NavLink>
+              <NavLink to={"/Cart"}>
+                <div className="text-white relative  text-xl mr-2  rounded-full p-4 hover:bg-[#164990] hover:text-white transition duration-300 ease-in-out shadow-sm shadow-[#164990]">
+                  <FaShoppingCart />
+                  <span className="text-sm absolute  top-0 left-6">
+                    {" "}
+                    {cart?.length}{" "}
+                  </span>
+                </div>
+              </NavLink>
             </li>
           </ul>
         </div>

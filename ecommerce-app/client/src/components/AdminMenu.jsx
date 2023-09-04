@@ -7,7 +7,7 @@ const AdminMenu = () => {
   return (
     <aside
       id="default-sidebar"
-      className="font-fontApp fixed top-55 left-0 z-40  w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 "
+      className="font-fontApp fixed top-54 mt-2 left-0 z-40  w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 "
       aria-label="Sidebar"
     >
       <div className="h-full w-full mx-auto px-3 py-4 overflow-y-auto bg-gradient-to-t from-[#164990] from-30% via-[#276FB7] via-50% to-[#1D5AA3] to-80%">

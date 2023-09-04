@@ -34,18 +34,18 @@ const Carousal = () => {
           <SwiperSlide>
             <img
               className=" "
-              src="public\images\banner1.jpg"
+              src="/images/banner1.jpg"
               alt="Shop Easy"
             />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="public\images\banner2.jpg" alt="Easy Payments" />
+            <img src="/images/banner2.jpg" alt="Easy Payments" />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="public\images\banner3.jpg" alt="Gift Vouchers" />
+            <img src="/images/banner3.jpg" alt="Gift Vouchers" />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="public\images\banner4.jpg" alt="Shop from Anywhere" />
+            <img src="/images/banner4.jpg" alt="Shop from Anywhere" />
           </SwiperSlide>
         </div>
       </Swiper>
