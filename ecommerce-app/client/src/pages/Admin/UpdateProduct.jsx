@@ -122,11 +122,14 @@ const UpdateProduct = () => {
               <div className="form-control md:w-96">
                 <select
                   className="select border-[#164990] focus:outline-none"
-                  onChange={(value) => {
-                    setCategory(value);
+                  onChange={(e) => {
+                    setCategory(e.target.value);
                   }}
-                  value={category}
+                  
                 >
+                  <option disabled selected>
+                  Update Category
+                </option>
                   {categories?.map((c) => (
                     <option key={c._id} value={c._id}>
                       {c.name}

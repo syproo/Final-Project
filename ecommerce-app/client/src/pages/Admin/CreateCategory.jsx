@@ -130,8 +130,8 @@ const CreateCategory = () => {
                 </thead>
                 <tbody className="bg-[#77AEDE]">
                   {categories?.map((c, Index) => (
-                    <tr key={c._id} className="">
-                      <td>{Index} .</td>
+                    <tr key={c._id}>
+                      <td>{Index + 1} .</td>
                       <td> {c.name} </td>
                       <td>
                         <button

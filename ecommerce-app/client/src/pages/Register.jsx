@@ -47,8 +47,8 @@ const Register = () => {
     <div>
       <Navtop title={"Mercado-Sign Up"} />
       <MainNav />
-      <div className="relative flex flex-col justify-center h-[75vh] overflow-hidden bg-gradient-to-b from-[#164990] to-[#276FB7] font-fontApp">
-        <div className="w-96 p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
+      <div className="flex flex-col justify-center h-[90vh] bg-gradient-to-b from-[#164990] to-[#276FB7] font-fontApp">
+        <div className="w-96 h-auto p-6 mx-auto bg-white rounded-md shadow-md lg:max-w-xl">
           <h1 className="text-3xl font-semibold text-center text-[#164990]">
             Sign Up Form
           </h1>

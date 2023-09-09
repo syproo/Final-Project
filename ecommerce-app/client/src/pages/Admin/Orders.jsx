@@ -6,18 +6,16 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import moment from "moment";
-import { Select } from "antd";
-const { Option } = Select;
 
 const Orders = () => {
   const [status, setStatus] = useState([
-    "Not Process",
+    "Not Processed",
     "Processing",
     "Shipped",
-    "delivered",
-    "cancel",
+    "Delivered",
+    "Canceled",
   ]);
-  const [changeStatus, setCHangeStatus] = useState("");
+  //const [changeStatus, setChangeStatus] = useState("");
   const [orders, setOrders] = useState([]);
   const [auth, setAuth] = useAuth();
 
@@ -54,72 +52,78 @@ const Orders = () => {
       <Navtop title={"dashboard - Orders"} />
       <MainNav />
       <AdminMenu />
-      <div className="p-4 sm:ml-64">
-        <div className="p-4 rounded-lg border-dashed border-2 border-gray-400 h-screen">
-          <h1 className="text-2xl">Orders </h1>
-          <div className="col-md-9">
-            <h1 className="text-center">All Orders</h1>
-            {orders?.map((o, i) => {
-              return (
-                // eslint-disable-next-line react/jsx-key
-                <div className="">
-                  <table className="">
-                    <thead>
-                      <tr>
-                        <th scope="">#</th>
-                        <th scope="">Status</th>
-                        <th scope="">Buyer</th>
-                        <th scope=""> date</th>
-                        <th scope="">Payment</th>
-                        <th scope="">Quantity</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{i + 1}</td>
-                        <td>
-                          <Select
-                            bordered={false}
-                            onChange={(value) => handleChange(o._id, value)}
-                            defaultValue={o?.status}
-                          >
-                            {status.map((s, i) => (
-                              <Option key={i} value={s}>
-                                {s}
-                              </Option>
-                            ))}
-                          </Select>
-                        </td>
-                        <td>{o?.buyer?.name}</td>
-                        <td>{moment(o?.createAt).fromNow()}</td>
-                        <td>{o?.payment.success ? "Success" : "Failed"}</td>
-                        <td>{o?.products?.length}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div className="container">
-                    {o?.products?.map((p, i) => (
-                      <div className="" key={p._id}>
-                        <div className="col-md-4">
-                          <img
-                            src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
-                            className="card-img-top"
-                            alt={p.name}
-                            width="100px"
-                            height={"100px"}
-                          />
+      <div className="p-4 sm:ml-64 font-fontApp">
+        <div className="grid grid-cols-1 w-full grid-flow-row text-center p-2 rounded-lg border-dashed border-2 border-[#164990] h-[80vh] overflow-hidden">
+          <h1 className="text-4xl text-white font-semibold p-4 rounded-md bg-gradient-to-r from-[#164990] to-[#77AEDE]">
+            ORDERS
+          </h1>
+          <div className="">
+            <div className="overflow-x-auto h-[65vh] mt-2">
+              <table className="table table-sm table-pin-rows ">
+                <thead className="text-lg sticky top-0 ">
+                  <tr className="bg-[#164990] text-white text-center">
+                    <th className="font-medium ">S#</th>
+                    <th className="font-medium ">Status</th>
+                    <th className="font-medium ">Buyer</th>
+                    <th className="font-medium ">Date</th>
+                    <th className="font-medium ">Payment</th>
+                    <th className="font-medium ">Quantity</th>
+                    <th className="font-medium ">Product</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orders?.map((o, i) => (
+                    <tr key={o._id} className="border-2 border-gray-300">
+                      <td className="text-center">{i + 1}.</td>
+                      <td>
+                        <select
+                          className="select select-bordered select-sm w-full max-w-xs  focus:outline-none"
+                          onChange={(e) => handleChange(o._id, e.target.value)}
+                          defaultValue={o?.status}
+                        >
+                          {status.map((s, i) => (
+                            <option key={i} value={s}>
+                              {s}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td className="text-center">{o?.buyer?.name}</td>
+                      <td className="text-center">
+                        {moment(o?.createAt).calendar()}
+                      </td>
+                      <td className="text-center">
+                        {o?.payment.success ? "Success" : "Failed"}
+                      </td>
+                      <td className="text-center">{o?.products?.length}</td>
+                      <td>
+                        <div className="text-md">
+                          {o?.products?.map((p) => (
+                            <div
+                              className="flex items-center gap-2 justify-center"
+                              key={p._id}
+                            >
+                              <div className="">
+                                <img
+                                  src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
+                                  className="card-img-top w-24 h-24"
+                                  alt={p.name}
+                                />
+                              </div>
+                              <div className="">
+                                <p>{p.name}</p>
+                                <p>{p.description.substring(0, 30)}</p>
+                                <p>Price : {p.price}</p>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                        <div className="">
-                          <p>{p.name}</p>
-                          <p>{p.description.substring(0, 30)}</p>
-                          <p>Price : {p.price}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

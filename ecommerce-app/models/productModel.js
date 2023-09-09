@@ -20,7 +20,7 @@ const productSchema = new mongoose.Schema({
     },
     category: {
         type: mongoose.ObjectId,
-        rrf: "Category",
+        ref: "Category",
         required: true
     },
     quantity: {
@@ -31,7 +31,7 @@ const productSchema = new mongoose.Schema({
         data: Buffer,
         contentType: String,
     },
-    shopping: {
+    shipping: {
         type: Boolean,
     },
 

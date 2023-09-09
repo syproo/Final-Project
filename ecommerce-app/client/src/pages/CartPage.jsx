@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import Navtop from '../components/Navtop'
-import MainNav from '../components/MainNav'
-import { useCart } from '../context/Cart'
-import { useAuth } from '../context/auth'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from "react";
+import Navtop from "../components/Navtop";
+import MainNav from "../components/MainNav";
+import { useCart } from "../context/Cart";
+import { useAuth } from "../context/auth";
+import { useNavigate } from "react-router-dom";
 import DropIn from "braintree-web-drop-in-react";
-import axios from 'axios'
-import { toast } from 'react-hot-toast'
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 // code for modal
-import { Modal } from "antd"
-import AddressInput from '../components/forms/AddresInput'
+import { Modal } from "antd";
+import AddressInput from "../components/forms/AddresInput";
 
 const CartPage = () => {
-  const [cart, setCart] = useCart()
-  const [auth, setAuth] = useAuth()
-  const [clientToken, setClientToken] = useState("")
+  const [cart, setCart] = useCart();
+  const [auth, setAuth] = useAuth();
+  const [clientToken, setClientToken] = useState("");
   const [instance, setInstance] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // code for modal
   const [visible, setVisible] = useState(false);
@@ -56,7 +56,6 @@ const CartPage = () => {
     }
   };
 
-
   // Function to calculate the total price
   const calculateTotalPrice = () => {
     let total = 0;
@@ -72,7 +71,9 @@ const CartPage = () => {
   //get payment gateway token
   const getToken = async () => {
     try {
-      const { data } = await axios.get("http://localhost:8080/api/v1/product/braintree/token");
+      const { data } = await axios.get(
+        "http://localhost:8080/api/v1/product/braintree/token"
+      );
       setClientToken(data?.clientToken);
     } catch (error) {
       console.log(error);
@@ -87,10 +88,13 @@ const CartPage = () => {
     try {
       setLoading(true);
       const { nonce } = await instance.requestPaymentMethod();
-      const { data } = await axios.post("http://localhost:8080/api/v1/product/braintree/payment", {
-        nonce,
-        cart,
-      });
+      const { data } = await axios.post(
+        "http://localhost:8080/api/v1/product/braintree/payment",
+        {
+          nonce,
+          cart,
+        }
+      );
       setLoading(false);
       localStorage.removeItem("cart");
       setCart([]);
@@ -102,76 +106,77 @@ const CartPage = () => {
     }
   };
   return (
-    <div className=''>
+    <div className="font-fontApp">
       <Navtop title={"Mercado - Cart"} />
       <MainNav />
       <div>
         <div>
-          <h1 className='text-center text-2xl p-4 text-bold'>
+          <h1 className="text-center text-2xl p-4 text-bold">
             {!auth?.user
               ? "Hello Guest !! "
               : `Hello  ${auth?.token && auth?.user?.name}`}
           </h1>
-          <h4 className='text-center text-2xl p-3 text-bold' >
+          <h4 className="text-center text-2xl p-3 text-bold">
             {cart?.length
-              ? `You Have ${cart.length} items in your cart ${auth?.token ? "" : "please login to checkout !"
-              }`
+              ? `You Have ${cart.length} items in your cart ${
+                  auth?.token ? "" : "please login to checkout !"
+                }`
               : " Your Cart Is Empty"}
           </h4>
         </div>
       </div>
-      <div className='flex  justify-around '>
+      <div className="flex  justify-around ">
         <div>
-          {
-            cart?.map(p => (
-              <div className='flex justify-between'>
-                <div className='ps-5 pe-5 '>
-                  <img
-                    className="object-fit w-96 h-80 rounded-lg transition duration-500 ease-in-out hover:scale-105"
-                    src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
-                    alt={p.name}
-                  />
-                </div>
-                <div className='ps-5 pe-5 '>
-                  <p>{p.name}</p>
-                  <p>{p.description.substring(0, 30)}</p>
-                  <p>{p.price}</p>
-                  <div className='flex justify-between'>
-                    <button
-                      type="button"
-                      class="inline-block rounded-full border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-                      onClick={() => changeItemQuantity(p._id, -1)}
-                      disabled={p.quantity < 1}
-                    >
-                      minus
-                    </button>
-                    <span className='w-10 text-center text-bold text-xl'>{p.quantity}</span>
-                    <button
-                      type="button"
-                      class="inline-block rounded-full border-2 border-success px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-success transition duration-150 ease-in-out hover:border-success-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-success-600 focus:border-success-600 focus:text-success-600 focus:outline-none focus:ring-0 active:border-success-700 active:text-success-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-                      onClick={() => changeItemQuantity(p._id, 1)}
-                    >
-                      plus
-                    </button>
-                  </div>
+          {cart?.map((p) => (
+            <div key={p._id} className="flex justify-between">
+              <div className="ps-5 pe-5 ">
+                <img
+                  className="object-fit w-96 h-80 rounded-lg transition duration-500 ease-in-out hover:scale-105"
+                  src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
+                  alt={p.name}
+                />
+              </div>
+              <div className="ps-5 pe-5 ">
+                <p>{p.name}</p>
+                <p>{p.description.substring(0, 30)}</p>
+                <p>{p.price}</p>
+                <div className="flex justify-between">
                   <button
                     type="button"
-                    onClick={() => removeCartItem(p._id)}
-                    className="inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]">
-                    Remove Item
+                    className="inline-block rounded-full border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+                    onClick={() => changeItemQuantity(p._id, -1)}
+                    disabled={p.quantity < 1}
+                  >
+                    minus
+                  </button>
+                  <span className="w-10 text-center text-bold text-xl">
+                    {p.quantity}
+                  </span>
+                  <button
+                    type="button"
+                    className="inline-block rounded-full border-2 border-success px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-success transition duration-150 ease-in-out hover:border-success-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-success-600 focus:border-success-600 focus:text-success-600 focus:outline-none focus:ring-0 active:border-success-700 active:text-success-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+                    onClick={() => changeItemQuantity(p._id, 1)}
+                  >
+                    plus
                   </button>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => removeCartItem(p._id)}
+                  className="inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]"
+                >
+                  Remove Item
+                </button>
               </div>
-            ))
-
-          }
+            </div>
+          ))}
         </div>
-        <div className='text center'>
-          <h1 className='text-2xl'>Cart Summary </h1>
+        <div className="text center">
+          <h1 className="text-2xl">Cart Summary </h1>
           <p>Total | Checkout | payment</p>
           <hr />
           <h1>Total: {calculateTotalPrice()}</h1>
-          <div className='p-5'>
+          <div className="p-5">
             {/* code for enter address */}
             {auth?.token ? (
               <button
@@ -223,16 +228,11 @@ const CartPage = () => {
         </div>
       </div>
       {/* modal */}
-      <Modal
-        onCancel={() => setVisible(false)}
-        footer={null}
-        open={visible}
-      >
+      <Modal onCancel={() => setVisible(false)} footer={null} open={visible}>
         <AddressInput />
-
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default CartPage
+export default CartPage;

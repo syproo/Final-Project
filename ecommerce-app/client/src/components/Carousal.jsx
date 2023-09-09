@@ -29,8 +29,9 @@ const Carousal = () => {
         navigation={true}
         modules={[Autoplay, Pagination, Navigation, EffectFade]}
         className="mySwiper "
+        
       >
-        <div>
+        <div className="">
           <SwiperSlide>
             <img
               className=" "

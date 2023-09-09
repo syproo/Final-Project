@@ -6,6 +6,7 @@ import slugify from "slugify";
 import braintree from "braintree"
 import dotenv from "dotenv";
 
+
 dotenv.config();
 
 //payment gateway
@@ -284,7 +285,7 @@ export const productCountController = async (req, res) => {
 // product list base on page
 export const productListController = async (req, res) => {
     try {
-        const perPage = 6;
+        const perPage = 12;
         const page = req.params.page ? req.params.page : 1;
         const products = await productModel
             .find({})

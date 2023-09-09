@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../context/auth.jsx";
 import toast from "react-hot-toast";
@@ -9,6 +10,7 @@ import { BiMenuAltRight } from "react-icons/bi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useState } from "react";
 import { useCart } from "../context/Cart.jsx";
+import SearchInput from "../components/forms/SearchInput";
 
 const MainNav = () => {
   const [cart] = useCart();
@@ -32,37 +34,50 @@ const MainNav = () => {
       <div className="fixed md:top-7 top-16 left-0 w-[100%] z-[10] text-lg mx-auto font-fontApp shadow-md px-8 py-4 items-center bg-white">
         <div className="flex justify-between items-center">
           {/*Logo*/}
-          <div className=" cursor-pointer ">
+          <div
+            className=" cursor-pointer "
+            
+          >
             <Link to={"/"}>
               <img
-                className="object-cover block w-36"
+                className="object-cover block w-28 md:w-36 transition duration-300 ease-in-out hover:scale-105"
                 src="/images/logo.png"
                 alt=""
               />
             </Link>
           </div>
-          {mobileNav ? (
-            <AiFillCloseCircle
-              onClick={() => setMobileNav(!mobileNav)}
-              className="text-[#164990] text-4xl md:hidden block"
-            />
-          ) : (
-            <BiMenuAltRight
-              onClick={() => setMobileNav(!mobileNav)}
-              className="text-[#164990] text-4xl items-center md:hidden block"
-            />
-          )}
+          <div className="">
+            {mobileNav ? (
+              <AiFillCloseCircle
+                onClick={() => setMobileNav(!mobileNav)}
+                className="text-[#164990] text-4xl md:hidden block"
+              />
+            ) : (
+              <BiMenuAltRight
+                onClick={() => setMobileNav(!mobileNav)}
+                className="text-[#164990] text-4xl items-center md:hidden block "
+              />
+            )}
+          </div>
 
           {/*NavLinks*/}
-          <div className="hidden md:flex ">
-            <ul className="flex gap-6 text-lg font-semibold p-2 items-center text-center justify-center">
-              <li className=" px-2 py-1 rounded-md hover:bg-[#164990] hover:text-white  transition-colors duration-300">
+          <div className="hidden md:flex">
+            <ul
+              
+              className="flex gap-1 p-2 font-medium items-center text-center justify-center"
+            >
+              <li>
+                <div className="">
+                  <SearchInput />
+                </div>
+              </li>
+              <li className=" px-3 py-2 rounded-md hover:bg-[#164990] hover:text-white  transition-colors duration-300">
                 <NavLink to={"/"}>Home</NavLink>
               </li>
 
               {/*Category Dropdown */}
 
-              <div className=" dropdown dropdown-hover ">
+              {/* <div className=" dropdown dropdown-hover ">
                 <label tabIndex={0} className=" hover:text-[#164990]">
                   <Link to={"/categories"}>Categories</Link>
                 </label>
@@ -77,20 +92,17 @@ const MainNav = () => {
                     </Link>
                   </li>
                   {categories.map((c) => (
-                    <>
-                      <li>
-                        <Link
-                          className="p-2 justify-center hover:bg-[#164990] hover:text-white transition duration-300 ease-in-out"
-                          to={`/category/${c.slug}`}
-                          key={c._id}
-                        >
-                          {c.name}
-                        </Link>
-                      </li>
-                    </>
+                    <li key={c._id}>
+                      <Link
+                        className="p-2 justify-center hover:bg-[#164990] hover:text-white transition duration-300 ease-in-out"
+                        to={`/category/${c.slug}`}
+                      >
+                        {c.name}
+                      </Link>
+                    </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
 
               {/*Login and Logout turnery operator*/}
               {!auth.user ? (
@@ -98,7 +110,7 @@ const MainNav = () => {
                   <li>
                     <NavLink
                       to={"/Login"}
-                      className="border-2 border-[#164990] rounded-lg px-3 py-1 hover:bg-[#164990] hover:text-white transition duration-300 ease-in-out shadow-sm shadow-[#164990]"
+                      className=" px-3 py-2 rounded-md hover:bg-[#164990] hover:text-white  transition-colors duration-300 "
                     >
                       Login
                     </NavLink>
@@ -106,7 +118,7 @@ const MainNav = () => {
                   <li>
                     <NavLink
                       to={"/register"}
-                      className="border-2 border-[#164990] rounded-lg px-3 py-1 hover:bg-[#164990] hover:text-white transition duration-300 ease-in-out shadow-sm shadow-[#164990]"
+                      className=" px-2 py-2 rounded-md hover:bg-[#164990] hover:text-white  transition-colors duration-300 "
                     >
                       Sign Up
                     </NavLink>
@@ -152,11 +164,10 @@ const MainNav = () => {
               )}
               <li>
                 <NavLink to={"/Cart"}>
-                  <div className="text-[#164990]  text-xl mr-2  rounded-full p-4 hover:bg-[#164990] hover:text-white transition duration-300 ease-in-out shadow-sm shadow-[#164990]">
+                  <div className="text-[#164990]  text-2xl space-x-2  rounded-lg px-4 py-3 justify-center content-center hover:bg-[#164990] hover:text-white transition duration-300 ease-in-out">
                     <FaShoppingCart />
-                    <span className="text-sm absolute top-6">
-                      {" "}
-                      {cart?.length}{" "}
+                    <span className="text-sm absolute top-6 px-1 hover:text-white">
+                      {cart?.length}
                     </span>
                   </div>
                 </NavLink>
@@ -180,10 +191,7 @@ const MainNav = () => {
             <details className=" dropdown m-4">
               <summary className=" cursor-pointer">Categories</summary>
 
-              <ul
-                tabIndex={0}
-                className="dropdown-content z-[1] py-2 menu rounded-box w-40 bg-white text-black "
-              >
+              <ul className="dropdown-content z-[1] py-2 menu rounded-box w-40 bg-white text-black ">
                 <li className="">
                   {" "}
                   <Link
@@ -262,7 +270,7 @@ const MainNav = () => {
                   <FaShoppingCart />
                   <span className="text-sm absolute  top-0 left-6">
                     {" "}
-                    {cart?.length}{" "}
+                    {cart?.length}
                   </span>
                 </div>
               </NavLink>

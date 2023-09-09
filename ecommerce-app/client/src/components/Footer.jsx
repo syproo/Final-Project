@@ -1,7 +1,7 @@
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 const Footer = () => {
   return (
-    <footer className="font-fontApp footer footer-center p-12 bg-[#164990] text-white w-[100%]">
+    <footer className="font-fontApp footer footer-center p-12 bg-[#164990] text-white w-[100%] h-auto mx-auto">
       <div className="grid grid-flow-col gap-4">
         <span className="link link-hover">About us</span>
         <span className="link link-hover">Contact</span>

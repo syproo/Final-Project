@@ -13,7 +13,7 @@ const CreateProduct = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
-
+  // eslint-disable-next-line no-unused-vars
   const [shipping, setShipping] = useState("");
   const [photo, setPhoto] = useState("");
 
@@ -23,8 +23,9 @@ const CreateProduct = () => {
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8080/api/v1/category/get-category`
+        "http://localhost:8080/api/v1/category/get-category"
       );
+
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -38,6 +39,26 @@ const CreateProduct = () => {
     getAllCategory();
   }, []);
 
+  //Get Single Category
+  const getSingleCategory = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:8080/api/v1/category/single-category/:slug"
+      );
+
+      if (data?.success) {
+        setCategory(data?.category);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong while fetching single category");
+    }
+  };
+
+  useEffect(() => {
+    getSingleCategory();
+  }, []);
+
   //Handle Create Product
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -49,10 +70,12 @@ const CreateProduct = () => {
       productData.append("quantity", quantity);
       productData.append("photo", photo);
       productData.append("category", category);
+
       const { data } = await axios.post(
-        `http://localhost:8080/api/v1/product/create-product`,
-         productData
+        "http://localhost:8080/api/v1/product/create-product",
+        productData
       );
+
       if (data.success) {
         toast.success("Product Created Successfully");
         navigate("/dashboard/admin/products");
@@ -60,7 +83,7 @@ const CreateProduct = () => {
         toast.error(data?.message);
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
       toast.error("Error");
     }
   };
@@ -78,13 +101,14 @@ const CreateProduct = () => {
             </h1>
             <div className="form-control  md:w-96">
               <select
-              
                 className="select border-[#164990] focus:outline-none"
-                onChange={(value) => {
-                  setCategory(value);
+                onChange={(e) => {
+                  setCategory(e.target.value);
                 }}
               >
-                
+                <option disabled selected>
+                  Select Category
+                </option>
                 {categories?.map((c) => (
                   <option key={c._id} value={c._id}>
                     {c.name}
@@ -144,7 +168,6 @@ const CreateProduct = () => {
                 onChange={(value) => {
                   setShipping(value);
                 }}
-                value={shipping}
                 className="select border-[#164990] focus:outline-none"
               >
                 <option disabled selected>
@@ -162,7 +185,6 @@ const CreateProduct = () => {
                 <input
                   className="file-input file-input-bordered w-full text"
                   type="file"
-                 
                   name="photo"
                   accept="image/*"
                   onChange={(e) => setPhoto(e.target.files[0])}

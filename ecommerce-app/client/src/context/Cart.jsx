@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useContext, createContext, useEffect } from "react";
 
 const CartContext = createContext();

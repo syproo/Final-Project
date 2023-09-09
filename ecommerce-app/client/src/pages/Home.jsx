@@ -11,6 +11,7 @@ import SearchInput from "../components/forms/SearchInput";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/Cart";
 import { toast } from "react-hot-toast";
+import Services from "../components/Services";
 
 const Home = () => {
   const [cart, setCart] = useCart();
@@ -107,6 +108,7 @@ const Home = () => {
         `http://localhost:8080/api/v1/product/product-list/${page}`
       );
       setLoading(false);
+      // eslint-disable-next-line no-unsafe-optional-chaining
       setProducts([...products, ...data?.products]);
     } catch (error) {
       console.log(error);
@@ -133,7 +135,9 @@ const Home = () => {
 
   // Function to add a product to the cart
   const addToCart = (product) => {
-    const existingItemIndex = cart.findIndex((item) => item._id === product._id);
+    const existingItemIndex = cart.findIndex(
+      (item) => item._id === product._id
+    );
 
     if (existingItemIndex !== -1) {
       // If the product is already in the cart, update its quantity
@@ -144,146 +148,151 @@ const Home = () => {
     } else {
       // If the product is not in the cart, add it with quantity 1
       setCart([...cart, { ...product, quantity: 1 }]);
-      localStorage.setItem("cart", JSON.stringify([...cart, { ...product, quantity: 1 }]));
+      localStorage.setItem(
+        "cart",
+        JSON.stringify([...cart, { ...product, quantity: 1 }])
+      );
     }
 
     toast.success("Item Added to cart");
   };
   return (
     <>
-      <div className="font-fontApp">
-        <Navtop title={"Mercado-Home Page"} />
+      <div className="font-fontApp container-xl p-1">
+        <Navtop title={"Mercado-Home"} />
         <MainNav />
         <Carousal />
-        {/* Single Product page Search input   */}
-        <div>
-          <h1 className="text-2xl">Search Categories below</h1>
-          <SearchInput />
-        </div>
-        {/*<Carousal />*/}
-        <div className="">
-          {/*Product Filter by Category */}
-          <div className="flex flex-col p-4">
-            <h1>Filter By Category</h1>
-            {categories.map((c) => (
-              <Checkbox
-                key={c._id}
-                onChange={(e) => handleFilter(e.target.checked, c._id)}
-              >
-                {c.name}
-              </Checkbox>
-            ))}
-          </div>
 
-          {/*Product Filter by price*/}
-          <div className="flex flex-col p-4">
-            <h1>Filter By Price</h1>
-            <Radio.Group onChange={(e) => setRadio(e.target.value)}>
-              {Prices?.map((p) => (
-                <div key={p._id}>
-                  <Radio value={p.array}>{p.name}</Radio>
-                </div>
+        <div className="flex md:flex-row w-full  justify-center">
+          <div  className="md:basis-1/6  md:sticky md:top-36 md:left-2 h-auto md:h-[50%] p-2 mt-6 md:block  hidden">
+            {/* Single Product page Search input   */}
+            {/* <div className="ml-2">
+              <SearchInput />
+            </div> */}
+
+            {/*Product Filter by Category */}
+            <div
+              
+              className="grid p-4 mt-14 space-y-2 border-2 border-[#164990] rounded-lg"
+            >
+              <h1 className="text-lg font-semibold underline">
+                Filter By Category
+              </h1>
+              {categories.map((c) => (
+                <Checkbox
+                  key={c._id}
+                  onChange={(e) => handleFilter(e.target.checked, c._id)}
+                  className="text-md font-medium"
+                >
+                  {c.name}
+                </Checkbox>
               ))}
-            </Radio.Group>
-          </div>
+            </div>
 
-          {/*Filter Clear Button*/}
-          <div>
-            <button onClick={() => window.location.reload()}>
-              Clear Filters
-            </button>
+            {/*Product Filter by price*/}
+            <div
+              
+              className="flex flex-col mt-2 p-4 border-2 border-[#164990] rounded-lg"
+            >
+              <h1 className="text-lg font-semibold underline">
+                Filter By Price
+              </h1>
+              <Radio.Group onChange={(e) => setRadio(e.target.value)}>
+                {Prices?.map((p) => (
+                  <div key={p._id} className="text-md font-medium">
+                    <Radio value={p.array}>{p.name}</Radio>
+                  </div>
+                ))}
+              </Radio.Group>
+            </div>
+
+            {/*Filter Clear Button*/}
+            <div className="text-center mt-2">
+              <button
+                onClick={() => window.location.reload()}
+                className="px-2 py-2 tracking-wide hover:text-black font-md border-2 border-[#164990] transition-colors duration-300 transform hover:bg-white rounded-md bg-[#164990] text-white focus:outline-none focus:bg-[#164990]"
+              >
+                Clear Filters
+              </button>
+            </div>
           </div>
 
           {/*All Products */}
-          <div className="justify-center text-center ">
-            <h1 className="text-2xl font-semibold">All Products</h1>
-            <div className="grid grid-cols-5 grid-flow-row p-4  justify-center gap-4">
-              {products?.map((p) => (
-                <div
-                  key={p._id}
-                  className=" max-w-sm p-2 text-center text-black border border-[#1D5AA3] rounded-lg shadow-lg shadow-gray-800 bg-white"
-                >
-                  <div className="overflow-hidden bg-contain bg-no-repeat shadow-md shadow-[#1D5AA3] rounded-lg">
-                    <img
-                      className="object-fit w-96 h-80 rounded-lg transition duration-300 ease-in-out hover:scale-105"
-                      src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
-                      alt=""
-                    />
-                  </div>
-                  <div className="text-lg font-bold underline p-2">
-                    {p.name}
-                  </div>
-                  <div className="font-bold">
-<<<<<<< HEAD
-                    <p className="">{p.description.substring(0, 60)}...</p>
-=======
-                    <p className="">
-                      {p.description.substring(0, 60)}...
-                    </p>
->>>>>>> b00802e13dd6074b80b7026cb09dcaae5f1c21e9
-                  </div>
-                  <div className="text-md font-semibold">
-                    <span>Rs : {p.price}</span>
-                  </div>
-                  <div className=" ">
-                    <div className="p-2">
-<<<<<<< HEAD
-                      <button
-                        className=" rounded-lg p-2 border-2 border-white text-white bg-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500"
-                        onClick={() => {
-                          setCart([...cart, p]);
-                          localStorage.setItem(
-                            "cart",
-                            JSON.stringify([...cart, p])
-                          );
-                          toast.success("Item Added to cart");
-                        }}
-                      >
-=======
-                      <button className=" rounded-lg p-2 border-2 border-white text-white bg-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500"
-                        onClick={() => addToCart(p)} >
->>>>>>> b00802e13dd6074b80b7026cb09dcaae5f1c21e9
-                        <a className="flex gap-2 items-center ">
-                          Add to Cart{" "}
-                          <span className="text-xl font-bold">
-                            <BsCartPlus />
-                          </span>
-                        </a>
-                      </button>
+          <div className="md:basis-5/6 p-2">
+            <div className="md:grid md:justify-items-center p-3">
+              <h1 className="text-3xl font-semibold underline p-4 text-center">
+                All Products
+              </h1>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4   gap-3 ">
+                {products?.map((p) => (
+                  <div
+                    data-aos="fade-up"
+                    data-aos-duration="1000"
+                    key={p._id}
+                    className="max-w-xs p-2 text-center text-black border border-[#1D5AA3] rounded-lg bg-white"
+                  >
+                    <div className="overflow-hidden bg-no-repeat block rounded-lg ">
+                      <img
+                        className="object-fit md:h-56 md:w-full w-60 h-36 rounded-lg transition duration-300 ease-in-out hover:scale-105"
+                        src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
+                        alt=""
+                      />
                     </div>
-                    <div className="rounded-lg p-2 border text-bold text-white bg-gray-800 shadow-md shadow-gray-800 hover:bg-yellow-300 hover:text-black hover:border-yellow-500">
-                      <button onClick={() => navigate(`/product/${p.slug}`)}>
-                        Product Description....
-                      </button>
+                    <div className="text-lg font-semibold underline p-2">
+                      {p.name}
+                    </div>
+                    <div className="font-medium">
+                      <p className="">{p.description.substring(0, 60)}...</p>
+                    </div>
+                    <div className="text-md font-semibold">
+                      <span>Rs : {p.price}</span>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-2 mt-1">
+                      <div className="">
+                        <button
+                          className=" rounded-lg p-2 border-2 border-[#164990] hover:bg-[#164990] hover:text-white transition duration-300 ease-in-out"
+                          onClick={() => addToCart(p)}
+                        >
+                          <a className="flex gap-2 items-center font-normal text-sm">
+                            Add to Cart{" "}
+                            <span className="text-xl font-bold ">
+                              <BsCartPlus />
+                            </span>
+                          </a>
+                        </button>
+                      </div>
+                      <div>
+                        <button
+                          onClick={() => navigate(`/product/${p.slug}`)}
+                          className="rounded-lg p-2 font-normal text-sm text-white bg-[#164990] border-2 border-[#164990]"
+                        >
+                          More Info ...
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              {/*Product Count */}
+              <div className="text-center p-4">
+                {products && products.length < total && (
+                  <button
+                    className="rounded bg-[#164990] px-8 py-2  text-md text-white hover:bg-transparent hover:text-black transition-all duration-500 ease-linear border-[#164990] border"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setPage(page + 1);
+                    }}
+                  >
+                    {loading ? "loading ..." : "Load More ..."}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
-          {/*Product Count */}
-          <div className="text-center">
-            {products && products.length < total && (
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setPage(page + 1);
-                }}
-              >
-                {loading ? "loading ..." : "Load More"}
-              </button>
-            )}
-          </div>
         </div>
+        <Services />
         <Footer />
-<<<<<<< HEAD
       </div>
-=======
-
-      </div>
-
-
->>>>>>> b00802e13dd6074b80b7026cb09dcaae5f1c21e9
     </>
   );
 };
