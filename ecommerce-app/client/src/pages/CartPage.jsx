@@ -1,24 +1,21 @@
-import { useState, useEffect } from "react";
-import Navtop from "../components/Navtop";
-import MainNav from "../components/MainNav";
-import { useCart } from "../context/Cart";
-import { useAuth } from "../context/auth";
-import { useNavigate } from "react-router-dom";
-import DropIn from "braintree-web-drop-in-react";
-import axios from "axios";
-import { toast } from "react-hot-toast";
+import React, { useState, useEffect } from 'react'
+import Navtop from '../components/Navtop'
+import MainNav from '../components/MainNav'
+import { useCart } from '../context/Cart'
+import { useAuth } from '../context/auth'
+import { useNavigate } from 'react-router-dom'
+import emptyCart from "../../public/images/emptyCart.png"
+import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai"
 
 // code for modal
-import { Modal } from "antd";
-import AddressInput from "../components/forms/AddresInput";
+import { Modal } from "antd"
+import AddressInput from '../components/forms/AddresInput'
+import Footer from '../components/Footer'
 
 const CartPage = () => {
-  const [cart, setCart] = useCart();
-  const [auth, setAuth] = useAuth();
-  const [clientToken, setClientToken] = useState("");
-  const [instance, setInstance] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [cart, setCart] = useCart()
+  const [auth, setAuth] = useAuth()
+  const navigate = useNavigate()
 
   // code for modal
   const [visible, setVisible] = useState(false);
@@ -68,165 +65,167 @@ const CartPage = () => {
     });
   };
 
-  //get payment gateway token
-  const getToken = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://localhost:8080/api/v1/product/braintree/token"
-      );
-      setClientToken(data?.clientToken);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getToken();
-  }, [auth?.token]);
 
-  //handle payments
-  const handlePayment = async () => {
-    try {
-      setLoading(true);
-      const { nonce } = await instance.requestPaymentMethod();
-      const { data } = await axios.post(
-        "http://localhost:8080/api/v1/product/braintree/payment",
-        {
-          nonce,
-          cart,
-        }
-      );
-      setLoading(false);
-      localStorage.removeItem("cart");
-      setCart([]);
-      navigate("/dashboard/user/orders");
-      toast.success("Payment Completed Successfully ");
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
   return (
-    <div className="font-fontApp">
+    <div className='font-fontApp '>
       <Navtop title={"Mercado - Cart"} />
       <MainNav />
-      <div>
-        <div>
-          <h1 className="text-center text-2xl p-4 text-bold">
+      <div className='h-full'>
+        <div className=''>
+          <h1 className='text-center text-base md:text-2xl p-4 text-bold'>
             {!auth?.user
-              ? "Hello Guest !! "
-              : `Hello  ${auth?.token && auth?.user?.name}`}
+              ?
+              (
+                <div className='flex justify-center gap-3'>
+                  <p className='border text-bold border-blue rounded-lg bg-[#164990]  text-white p-2  shadow-lg shadow-blue-600' >
+                    Hello Guest !!
+                  </p>
+                  <img className=' w-[45px] ' src="https://th.bing.com/th/id/OIP.3L00mtkmeBhyXTtqn6A8dQHaHa?pid=ImgDet&rs=1" alt="" />
+                </div>
+              )
+              : (
+                <div className='flex justify-center gap-3  '>
+                  <p className='border text-bold border-blue rounded-lg bg-[#164990]    text-white p-2  shadow-lg shadow-blue-600' >
+                    {`Hello  ${auth?.token && auth?.user?.name} `}
+                  </p>
+                  <img
+                    className=' w-[45px] '
+                    src="https://th.bing.com/th/id/OIP.3L00mtkmeBhyXTtqn6A8dQHaHa?pid=ImgDet&rs=1"
+                  />
+                </div>
+              )
+            }
           </h1>
-          <h4 className="text-center text-2xl p-3 text-bold">
+          <h4 className='text-center md:text-2xl p-3 text-bold' >
             {cart?.length
-              ? `You Have ${cart.length} items in your cart ${
-                  auth?.token ? "" : "please login to checkout !"
-                }`
-              : " Your Cart Is Empty"}
+              ? (
+                <>
+                  <div className=' flex justify-center gap-4'>
+                    <p className='border  border-slate rounded-lg bg-slate-100  p-2  shadow-lg shadow-gray-500'>
+                      {`You Have ${cart.length} items in your cart  ${auth?.token ? "" : "please login to checkout !"}`}
+                    </p>
+                    <img
+                      className='w-[50px] '
+                      src="https://images.designtrends.com/wp-content/uploads/2015/11/27105901/Shopping-Cart-Icons31.png" />
+                  </div>
+                  {/*  code for Cart itmes*/}
+                  <div className='   md:flex md:justify-around mt-7'>
+                    <div className=' mt-5 p-4 m-4 w-100  flex flex-col gap-8 md:gap-3 ' >
+                      {
+                        cart?.map(p => (
+                          <div className='  p-3 rounded-lg  md:flex md:justify-between   md:m-5 md:p-5   shadow-xl shadow-gray-500' >
+                            <div className=' p-2 md:ps-5 md:pe-5 '>
+                              <img
+                                className="object-fit relative left-[50px]  md:relative md:left-2 w-[150px] h-[120px] md:w-40 md:h-40  rounded-lg transition duration-500 ease-in-out hover:scale-105"
+                                src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
+                                alt={p.name}
+                              />
+                            </div>
+                            <div className=' p-2 w-[270px] md:w-[400px] place-content-center   md:p-5 flex gap-2 md:gap-8 text-base md:text-[18px] bg-[#164990]   text-white rounded-lg  border-white'>
+                              <div className=' text-sm md:text-base '>
+                                <div className='flex gap-1 md:gap-4 p-1'>
+                                  <h1 className='underline decoration-solid text-'> Name :</h1>
+                                  <p>{p.name}</p>
+                                </div>
+                                <div className='flex gap-1 md:gap-4 p-1' >
+                                  <h1 className='underline decoration-solid text-'> Description: </h1>
+                                  <p>{p.description.substring(0, 30)}</p>
+                                </div>
+                                <div className='flex  gap-1 md:gap-4 p-1' >
+                                  <h1 className='underline decoration-solid text-'>Price:</h1>
+                                  <p>{p.price}</p>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => removeCartItem(p._id)}
+                                  className="  m-2 inline-block rounded bg-neutral-50 px-2 md:px-6 pb-2 pt-2.5 text-[12px] md:text-xs font-medium uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_#cbcbcb] transition duration-150 ease-in-out hover:bg-neutral-100 hover:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:bg-neutral-100 focus:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] focus:outline-none focus:ring-0 active:bg-neutral-200 active:shadow-[0_8px_9px_-4px_rgba(203,203,203,0.3),0_4px_18px_0_rgba(203,203,203,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(251,251,251,0.3)] dark:hover:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:focus:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)] dark:active:shadow-[0_8px_9px_-4px_rgba(251,251,251,0.1),0_4px_18px_0_rgba(251,251,251,0.05)]">
+                                  Remove Item
+                                </button>
+                              </div>
+                              <div className='flex flex-col gap-2'>
+                                <div>
+                                  <h1 className='underline decoration-solid text-sm md:text-base'> Quantity :</h1>
+                                </div>
+                                <div className='flex text-xl md:text-2xl'>
+                                  <AiOutlineMinusCircle
+                                    onClick={() => changeItemQuantity(p._id, -1)}
+                                    disabled={p.quantity < 1}
+                                  />
+                                  <span
+                                    className='w-10 text-center text-bold text-sm md:text-xl'>
+                                    {p.quantity}
+                                  </span>
+                                  <AiOutlinePlusCircle
+                                    onClick={() => changeItemQuantity(p._id, 1)}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      }
+                    </div>
+                    <div className=' relative left-5 p-5 mt-5  md:mt-20 w-80 md:w-[350px] md:h-[250px] text center rounded-lg border border-black shadow-lg shadow-black'>
+                      <div className='flex text-base flex-col gap-8'>
+                        <h1
+                          className='text-xl sm:w-40 md:w-80 border text-bold border-blue rounded-lg bg-[#164990]   text-white p-2  shadow-lg shadow-blue-600'>
+                          Cart Summary
+                        </h1>
+                        <div className='flex  justify-around'>
+                          <h1
+                            className=' sm:w-40 md:w-20 border text-bold border-blue rounded-lg bg-black text-white p-2  shadow-lg shadow-gray-600' >
+                            Total:
+                          </h1>
+                          <h1
+                            className='border sm:w-60 md:w-40 border-slate rounded-lg bg-slate-100  p-2  shadow-lg shadow-gray-500'>
+                            {calculateTotalPrice()}
+                          </h1>
+                        </div>
+                      </div>
+                      <div className='p-5'>
+                        {/* code for Checkout */}
+                        {auth?.token ? (
+                          <button
+                            className='text-base sm:w-60 md:w-60 border text-bold border-blue rounded-lg bg-[#164990]    text-white p-2  shadow-lg shadow-blue-600'
+                            onClick={() => {
+                              setVisible(true);
+                            }}
+                          >
+                            Click to checkout !!
+                          </button>
+                        ) : (
+                          <button
+                          className='text-base sm:w-60 md:w-60 border text-bold border-blue rounded-lg bg-[#164990]    text-white p-2  shadow-lg shadow-blue-600'
+                            onClick={() =>
+                              navigate("/login", {
+                                state: "/cart",
+                              })
+                            }
+                          >
+                            Click to Login for checkout 
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  {/* end */}
+                </>
+              )
+              :
+              (
+                <div className='h-80' >
+                  <p className='p-5' >Your Cart Is Empty</p>
+                  <img
+                    className=' relative top-[20px] left-20 xl:left-[600px] lg:left-[380px] md:left-[280px] w-[250px] '
+                    src={emptyCart}
+                    alt="empty"
+                  />
+                </div>
+              )}
           </h4>
         </div>
       </div>
-      <div className="flex  justify-around ">
-        <div>
-          {cart?.map((p) => (
-            <div key={p._id} className="flex justify-between">
-              <div className="ps-5 pe-5 ">
-                <img
-                  className="object-fit w-96 h-80 rounded-lg transition duration-500 ease-in-out hover:scale-105"
-                  src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
-                  alt={p.name}
-                />
-              </div>
-              <div className="ps-5 pe-5 ">
-                <p>{p.name}</p>
-                <p>{p.description.substring(0, 30)}</p>
-                <p>{p.price}</p>
-                <div className="flex justify-between">
-                  <button
-                    type="button"
-                    className="inline-block rounded-full border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-                    onClick={() => changeItemQuantity(p._id, -1)}
-                    disabled={p.quantity < 1}
-                  >
-                    minus
-                  </button>
-                  <span className="w-10 text-center text-bold text-xl">
-                    {p.quantity}
-                  </span>
-                  <button
-                    type="button"
-                    className="inline-block rounded-full border-2 border-success px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-success transition duration-150 ease-in-out hover:border-success-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-success-600 focus:border-success-600 focus:text-success-600 focus:outline-none focus:ring-0 active:border-success-700 active:text-success-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-                    onClick={() => changeItemQuantity(p._id, 1)}
-                  >
-                    plus
-                  </button>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => removeCartItem(p._id)}
-                  className="inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]"
-                >
-                  Remove Item
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="text center">
-          <h1 className="text-2xl">Cart Summary </h1>
-          <p>Total | Checkout | payment</p>
-          <hr />
-          <h1>Total: {calculateTotalPrice()}</h1>
-          <div className="p-5">
-            {/* code for enter address */}
-            {auth?.token ? (
-              <button
-                className="inline-block rounded bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
-                onClick={() => {
-                  setVisible(true);
-                }}
-              >
-                Enter your Full Address
-              </button>
-            ) : (
-              <button
-                className="inline-block rounded bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]"
-                onClick={() =>
-                  navigate("/login", {
-                    state: "/cart",
-                  })
-                }
-              >
-                Please Login to checkout
-              </button>
-            )}
-          </div>
-          <div className="mt-2">
-            {!clientToken || !auth?.token || !cart?.length ? (
-              ""
-            ) : (
-              <>
-                <DropIn
-                  options={{
-                    authorization: clientToken,
-                    paypal: {
-                      flow: "vault",
-                    },
-                  }}
-                  onInstance={(instance) => setInstance(instance)}
-                />
-
-                <button
-                  className="btn btn-primary"
-                  onClick={handlePayment}
-                  disabled={loading || !instance}
-                >
-                  {loading ? "Processing ...." : "Make Payment"}
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
+      <Footer />
       {/* modal */}
       <Modal onCancel={() => setVisible(false)} footer={null} open={visible}>
         <AddressInput />
