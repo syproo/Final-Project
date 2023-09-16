@@ -1,7 +1,9 @@
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 const Footer = () => {
   return (
-    <footer className="font-fontApp footer footer-center p-12 bg-[#164990] text-white w-[100%] h-auto mx-auto">
+    <div className="">
+    <footer className="font-fontApp footer footer-center p-12 text-[#164990] w-[100%] h-auto border-t-2 border-t-[#164990]">
+      
       <div className="grid grid-flow-col gap-4">
         <span className="link link-hover">About us</span>
         <span className="link link-hover">Contact</span>
@@ -19,6 +21,7 @@ const Footer = () => {
         <p>Copyright © 2023 - All right reserved by Phoenix Coders</p>
       </div>
     </footer>
+    </div>
   );
 };
 

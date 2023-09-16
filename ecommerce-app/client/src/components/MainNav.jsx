@@ -31,13 +31,10 @@ const MainNav = () => {
   };
   return (
     <>
-      <div className="fixed md:top-7 top-16 left-0 w-[100%] z-[10] text-lg mx-auto font-fontApp shadow-md px-8 py-4 items-center bg-white">
-        <div className="flex justify-between items-center">
+      <div className="fixed md:top-7 top-16 left-0 z-[10] w-screen text-lg font-fontApp shadow-md px-8 py-4 items-center bg-white">
+        <div className="flex justify-between items-center ">
           {/*Logo*/}
-          <div
-            className=" cursor-pointer "
-            
-          >
+          <div className=" cursor-pointer ">
             <Link to={"/"}>
               <img
                 className="object-cover block w-28 md:w-36 transition duration-300 ease-in-out hover:scale-105"
@@ -62,16 +59,13 @@ const MainNav = () => {
 
           {/*NavLinks*/}
           <div className="hidden md:flex">
-            <ul
-              
-              className="flex gap-1 p-2 font-medium items-center text-center justify-center"
-            >
+            <ul className="flex gap-1 font-medium items-center text-center justify-center">
               <li>
                 <div className="">
                   <SearchInput />
                 </div>
               </li>
-              <li className=" px-3 py-2 rounded-md hover:bg-[#164990] hover:text-white  transition-colors duration-300">
+              <li className=" px-3 py-2 rounded-md hover:bg-[#164990] hover:text-white text-[#164990] transition-colors duration-300">
                 <NavLink to={"/"}>Home</NavLink>
               </li>
 

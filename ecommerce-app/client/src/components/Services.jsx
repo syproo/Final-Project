@@ -9,7 +9,7 @@ const Services = () => {
         >
           <img
             className="object-fit w-20 h-20  transition duration-300 ease-in-out hover:scale-105"
-            src="images/fast-delivery.png"
+            src="/images/fast-delivery.png"
             alt=""
           />
           <p className="text-lg font-semibold text-center">Fast Shipping</p>
@@ -22,7 +22,7 @@ const Services = () => {
         >
           <img
             className="object-fit w-20 h-20 rounded-lg transition duration-300 ease-in-out hover:scale-105"
-            src="images/cash-on-delivery.png"
+            src="/images/cash-on-delivery.png"
             alt=""
           />
           <p className="text-lg font-semibold">Cash On Delivery</p>
@@ -35,7 +35,7 @@ const Services = () => {
         >
           <img
             className="object-fit w-20 h-20 rounded-lg transition duration-300 ease-in-out hover:scale-105"
-            src="images/free-returns.png"
+            src="/images/free-returns.png"
             alt=""
           />
           <p className="text-lg font-semibold">Free Returns</p>
@@ -48,7 +48,7 @@ const Services = () => {
         >
           <img
             className="object-fit w-20 h-20 rounded-lg transition duration-300 ease-in-out hover:scale-105"
-            src="images/customer-support.png"
+            src="/images/customer-support.png"
             alt=""
           />
           <p className="text-lg font-semibold">Customer Support</p>

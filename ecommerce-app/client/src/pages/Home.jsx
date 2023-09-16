@@ -7,7 +7,6 @@ import axios from "axios";
 import { BsCartPlus } from "react-icons/bs";
 import { Checkbox, Radio } from "antd";
 import { Prices } from "../components/Prices";
-import SearchInput from "../components/forms/SearchInput";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/Cart";
 import { toast } from "react-hot-toast";
@@ -158,23 +157,15 @@ const Home = () => {
   };
   return (
     <>
-      <div className="font-fontApp container-xl p-1">
+      <div className="font-fontApp container mx-auto">
         <Navtop title={"Mercado-Home"} />
         <MainNav />
         <Carousal />
 
         <div className="flex md:flex-row w-full  justify-center">
-          <div  className="md:basis-1/6  md:sticky md:top-36 md:left-2 h-auto md:h-[50%] p-2 mt-6 md:block  hidden">
-            {/* Single Product page Search input   */}
-            {/* <div className="ml-2">
-              <SearchInput />
-            </div> */}
-
+          <div className="md:basis-1/6  md:sticky md:top-36 md:left-2 h-auto md:h-[50%] p-2 mt-6 md:block  hidden">
             {/*Product Filter by Category */}
-            <div
-              
-              className="grid p-4 mt-14 space-y-2 border-2 border-[#164990] rounded-lg"
-            >
+            <div className="grid p-4 mt-14 space-y-2 border-2 border-[#164990] rounded-lg">
               <h1 className="text-lg font-semibold underline">
                 Filter By Category
               </h1>
@@ -190,10 +181,7 @@ const Home = () => {
             </div>
 
             {/*Product Filter by price*/}
-            <div
-              
-              className="flex flex-col mt-2 p-4 border-2 border-[#164990] rounded-lg"
-            >
+            <div className="flex flex-col mt-2 p-4 border-2 border-[#164990] rounded-lg">
               <h1 className="text-lg font-semibold underline">
                 Filter By Price
               </h1>
@@ -220,10 +208,10 @@ const Home = () => {
           {/*All Products */}
           <div className="md:basis-5/6 p-2">
             <div className="md:grid md:justify-items-center p-3">
-              <h1 className="text-3xl font-semibold underline p-4 text-center">
+              <h1 className="text-xl md:text-3xl font-semibold underline p-4 text-center">
                 All Products
               </h1>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4   gap-3 ">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 ">
                 {products?.map((p) => (
                   <div
                     data-aos="fade-up"
@@ -233,15 +221,15 @@ const Home = () => {
                   >
                     <div className="overflow-hidden bg-no-repeat block rounded-lg ">
                       <img
-                        className="object-fit md:h-56 md:w-full w-60 h-36 rounded-lg transition duration-300 ease-in-out hover:scale-105"
+                        className="object-fit md:h-44 md:w-full w-60 h-28 rounded-lg transition duration-300 ease-in-out hover:scale-105"
                         src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
                         alt=""
                       />
                     </div>
-                    <div className="text-lg font-semibold underline p-2">
+                    <div className="md:text-lg font-semibold underline p-2">
                       {p.name}
                     </div>
-                    <div className="font-medium">
+                    <div className="font-medium hidden md:block">
                       <p className="">{p.description.substring(0, 60)}...</p>
                     </div>
                     <div className="text-md font-semibold">
@@ -250,12 +238,13 @@ const Home = () => {
                     <div className="flex flex-wrap justify-center gap-2 mt-1">
                       <div className="">
                         <button
-                          className=" rounded-lg p-2 border-2 border-[#164990] hover:bg-[#164990] hover:text-white transition duration-300 ease-in-out"
+                          className=" rounded-lg p-1 md:p-2 border-2 border-[#164990] hover:bg-[#164990] hover:text-white transition duration-300 ease-in-out"
                           onClick={() => addToCart(p)}
                         >
-                          <a className="flex gap-2 items-center font-normal text-sm">
-                            Add to Cart{" "}
-                            <span className="text-xl font-bold ">
+                          <a className="md:flex gap-2 items-center font-normal md:text-[12px]">
+                            <span className="hidden md:block">Add to Cart</span>
+
+                            <span className="text-lg md:text-xl font-bold ">
                               <BsCartPlus />
                             </span>
                           </a>
@@ -264,7 +253,7 @@ const Home = () => {
                       <div>
                         <button
                           onClick={() => navigate(`/product/${p.slug}`)}
-                          className="rounded-lg p-2 font-normal text-sm text-white bg-[#164990] border-2 border-[#164990]"
+                          className="rounded-lg p-1 md:p-2 text-[10px] md:text-[12px] text-white bg-[#164990] border-2 border-[#164990]"
                         >
                           More Info ...
                         </button>
